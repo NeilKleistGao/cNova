@@ -8,7 +8,8 @@ auto x = 10; // int
 auto y = 1.2; // float
 auto z = "hello"; // string
 auto w = true; // bool
-auto p = {1, 2, 3}; // array
+auto p = [1, 2, 3]; // array
+auto q = {}; // dictionary
 ```
 
 cNova is a weak-type language:
@@ -46,8 +47,8 @@ while (i < 10) {
 ### input and output
 In cNova, all codes in a file is considered as a function. So function parameters are all input data you can get, and you can use keyword `return` to return a value:
 ```c++
-#define (x, y, z)
-return x + y + z
+extern x, y, z;
+return x + y + z;
 ```
 
 ### closure
@@ -64,7 +65,7 @@ if (player.HP <= 0) {
 ## an example
 ```c++
 // a poison state script
-#define (last_time)
+extern last_time;
 
 auto player = this;
 player.HP -= 10;
@@ -74,5 +75,5 @@ if (player.HP <= 0) {
     last_time = 0;
 }
 
-return last_time == 0
+return last_time == 0;
 ```

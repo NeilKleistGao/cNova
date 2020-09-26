@@ -5,12 +5,13 @@
 + `auto`
 + `return`
 + `if`
-+ `else if`
 + `else`
 + `while`
 + `this`
 + `true`
 + `false`
++ `break`
++ `continue`
 
 ## data type
 | name | example | data type in C++ |
@@ -22,6 +23,7 @@
 | array | [1, 2, 3] | CNovaObject[] |
 | dictionary | {} | map<string, CNobaObject>* |
 | pointer | this | void* |
+| function | abs() | void* |
 | null | null | nullptr |
 
 ## operator
@@ -53,6 +55,16 @@
 | logical not | ! | `!x` |
 | setter&getter | [] | `arr[0]` |
 | access | -> | `this->foo` |
+| add and assign | += | `a += 2` |
+| sub and assign | -= | `a -= 2` |
+| mult and assign | *= | `a *= 2` |
+| div and assign | /= | `a /= 2` |
+| and and assign | &= | `a &= 2` |
+| or and assign | |= | `a |= 2` |
+| xor and assign | ^= | `a ^= 2` |
+| power and assign | **= | `a **= 2` |
+| left shift and assign | <<= | `a <<= 2` |
+| right shift and assign | >>= | `a >>= 2` |
 
 ## variable name and function name
 begin with an alpha or an underline and it can include alphanumeric and underline.

@@ -21,6 +21,9 @@ x = "wryyyy";
 
 You can use these variables in c style way:
 ```c++
+register "math";
+register "string";
+
 x = 10 + 20;
 y = sin(3.14); // use math lib
 z = strlen("QWQ"); // use string lib

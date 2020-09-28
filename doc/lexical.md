@@ -1,6 +1,6 @@
 # Lexical Design Doc
 
-## keyword
+## keywords
 + `extern`
 + `auto`
 + `return`
@@ -12,6 +12,12 @@
 + `false`
 + `break`
 + `continue`
++ `register`
++ `int`
++ `float`
++ `bool`
++ `string`
++ `nullptr`
 
 ## data type
 | name | example | data type in C++ |

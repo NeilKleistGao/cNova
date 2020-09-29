@@ -1,6 +1,7 @@
 # Lexical Design Doc
 
 ## keywords
++ `register`
 + `extern`
 + `auto`
 + `return`
@@ -12,7 +13,6 @@
 + `false`
 + `break`
 + `continue`
-+ `register`
 + `int`
 + `float`
 + `bool`
@@ -35,8 +35,6 @@
 ## operator
 | name | operator | example |
 | --- | --- | --- |
-| block | {} | `while (true) {}` |
-| end line | ; | `auto x = 1;` |
 | add | + | `x = 5 + 3;` |
 | sub | - | `x = 4 - 1` |
 | mult | * | `x = 3 * 2` |
@@ -48,7 +46,7 @@
 | bit not | ~ | `~444` |
 | left shift | << | `10 << 2` |
 | right shift | >> | `10 >> 2` |
-| comment | // | `//hello` |
+| comment | /**/ | `/*hello*/` |
 | assign | = | `x = 5;` |
 | equal | == | `x == y` |
 | not equal | != | `x != y` |

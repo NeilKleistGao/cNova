@@ -27,6 +27,7 @@
 
 namespace lexical {
 //TODO:
+
 } // namespace lexical
 
 #endif //CNOVA_TOKEN_H

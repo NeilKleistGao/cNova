@@ -38,8 +38,9 @@ namespace lecxical{
 #else
 	using nova_int = long long;
 	using nova_float = double;
-	using nova_string = char*;
+	using nova_string = char *;
 	using nova_pointer = void*;
+
 #endif
 
 	const static std::string RESERVED_KEYWORD_STRING[] = {
@@ -51,6 +52,7 @@ namespace lecxical{
 
 
 	struct  Novatokendata{    //This struct is a record of token data info
+
 		enum tokendatatype{   //This enum  is a record of token data type
 			INTEGER,
 			FLOAT,
@@ -58,7 +60,52 @@ namespace lecxical{
 			ARRAY,
 			DICTIONARY,
 			POINTER,
-			FUNCTION
+			FUNCTION,
+			LESS,
+			LEFT_SHIFT_AND_ASSIGN,
+			LEFT_SHIFT,
+			LESS_OR_EQUAL,
+			GREATER_OR_EQUAL,
+			GREATER,
+			RIGHT_SHIFT_AND_ASSIGN,
+			RIGHT_SHIFT,
+			ADD,
+			INCREMENT,
+			ADD_AND_ASSIGN,
+			SUB,
+			SUB_AND_ASSIGN,
+			DECREASE,
+			MULT_AND_ASSIGN,
+			POWER_AND_ASSIGN,
+			POWER,
+			MULT,
+			DIV,
+			DIV_AND_ASSIGN,
+			LOGICAL_AND,
+			BIT_AND,
+			AND_AND_ASSIGN,
+			BIT_OR,
+			LOGICAL_OR,
+			OR_AND_ASSIGN,
+			BIT_XOR,
+			XOR_AND_ASSIGN,
+			BIT_NOT,
+			EQUAL,
+			ASSIGN,
+			LOGICAL_NOT,
+			NOT_EQUAL,
+			LEFT_PARENTTHESE,   //左小括号
+			RIGHT_PARENTTHESE,   //左小括号
+			LEFT_SQUARE_BRACKETS,  //左中括号
+			RIGHT_SQUARE_BRACKETS,  //右中括号
+			LEFT_BRACES,			//左大括号
+			RIGHT_BRACES ,//右大括号
+			COMMA,		  //逗号
+			FULL_STOP,     //句号
+			PTR,
+			COLON,
+			SEMICOLON
+
 		} ;
 		union tokendata{        //This union is a record of data
 			nova_int int_data;
@@ -66,16 +113,15 @@ namespace lecxical{
 			nova_string string_data;
 			nova_pointer pointer_data;
 		} ;
-
 		tokendatatype type;
 		tokendata data;
-
-
 	};
 
 
 
-	typedef  struct  cNova_token{
+	typedef  struct  {
+
+
 		enum tokentype{   //This enum is record of token type
 			REGISTER,
 			EXTERN,
@@ -98,14 +144,14 @@ namespace lecxical{
 			NOTATION,
 			LITERATE_STRING,
 			LITERATE_INT,
-			LITERATE_FLOAT
+			LITERATE_FLOAT,
+			IGNORE
 		} ;
 
 		tokentype type;
 		Novatokendata value;
 
-
-	};
+	}cNova_token;
 
 
 

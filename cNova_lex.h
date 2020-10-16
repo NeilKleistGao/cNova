@@ -30,7 +30,7 @@
 #include <cstring>
 #include <list>
 #include "input_stream.h"
-
+#include <sstream>
 
 namespace lecxical{
     static constexpr size_t POINTER_SIZE = sizeof(void*);
@@ -39,12 +39,13 @@ namespace lecxical{
     using nova_float = float;
     using nova_string = char*;
     using nova_pointer = void*;
+    static constexpr size_t PRECISION = 7;
 #else
     using nova_int = long long;
     using nova_float = double;
     using nova_string = char *;
     using nova_pointer = void*;
-
+    static constexpr size_t PRECISION = 15;
 #endif
 
     const static std::string RESERVED_KEYWORD_STRING[] = {
@@ -109,7 +110,10 @@ namespace lecxical{
             PTR,
             COLON,
             SEMICOLON,
-            KEYWORD     //关键字，表明了就无需加值了
+            KEYWORD,
+            PERCENT,
+            PERCENT_AND_EQUAL
+            //关键字，表明了就无需加值了
 
         } ;
         union tokendata{        //This union is a record of data

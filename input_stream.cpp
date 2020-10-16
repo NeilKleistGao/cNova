@@ -39,6 +39,11 @@ input_stream::~input_stream(void)
 		in.close();
 	delete[] buffer1;
 	delete[] buffer2;
+	buffer1 = nullptr;
+	buffer2 = nullptr;
+	forward = nullptr;
+	lexemeBegin = nullptr;
+	current = nullptr;
 }
 
 bool input_stream::addEOF(void)

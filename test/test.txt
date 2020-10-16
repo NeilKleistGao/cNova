@@ -74,4 +74,4 @@ dic["icon"] = "burning.png";
 dic["format"] = "You are burning! Last for %i round!";
 dic["damage_per_round"] = 5;
 dic["last_round"] = 3;
-return dic;   
+return dic;                      

@@ -726,7 +726,7 @@ cNova_token lecxical::variableAndKeyword(input_stream *is)
 
 void lecxical::convert_to_Token(std::string filename, std::list<lecxical::cNova_token> &isl)
 {
-    input_stream *is = new input_stream(filename, 1024 * 3);
+    input_stream *is = new input_stream(filename, 1024);
     while (is->getChar() != EOF)
     {
 

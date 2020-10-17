@@ -102,7 +102,8 @@ int main()
                             "LITERATE_STRING",
                             "LITERATE_INT",
                             "LITERATE_FLOAT",
-                            "IGNORE"};
+                            "IGNORE"
+                            };
     std::list<lecxical::cNova_token> isl;
 
     std::list<lecxical::cNova_token>::iterator i;
@@ -116,7 +117,7 @@ int main()
         "test/test.txt"};
     
     std::ofstream testOut;
-    testOut.open("test/outcome.txt",std::ios::app);
+    testOut.open("test/outcome.txt");
     for (auto file : files)
     {
         testOut << file << std::endl;

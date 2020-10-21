@@ -1,8 +1,8 @@
 #include <iostream>
 #include <iomanip>
-#include "cNova_lex.h"
-#include "input_stream.h"
-using namespace lecxical;
+#include "lexical/lexical_definition.h"
+#include "io/input_stream.h"
+
 //打印value值的函数
 void printValue(std::list<lecxical::cNova_token>::iterator iterator){
     if(iterator->value.type==Novatokendata::FLOAT)
@@ -108,7 +108,7 @@ int main()
 
     std::list<lecxical::cNova_token>::iterator i;
 
-    std::array<std::__cxx11::string, 6> files = {
+    std::array<std::string, 6> files = {
         "test/single_judge.txt",
         "test/test_keyword.txt",
         "test/test_number.txt",

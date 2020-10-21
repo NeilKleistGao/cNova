@@ -3,4 +3,4 @@ project(cNova)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(cNova main.cpp lexical/tokens.h)
+add_executable(cNova main.cc lexical/tokens.h)

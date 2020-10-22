@@ -1,5 +1,7 @@
 // MIT License
 //
+// Copyright (c) 2020 NeilKleistGao
+//
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -17,14 +19,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// FILENAME: keyword.h
-// LAST MODIFY: 2020/9/29
 
-#ifndef CNOVA_KEYWORD_H
-#define CNOVA_KEYWORD_H
+#include "lexical_exceptions.h"
 
-namespace lexical {
-//TODO:
-} // namespace lexical
+namespace cnova::lexical {
+UnknownCharacterException::UnknownCharacterException(const char& ch, const int& line) : LineNumberMark(line) {
+    _info = &"can't solve character " [ch] ;
+    _info += " at " + std::to_string(line);
+}
 
-#endif //CNOVA_KEYWORD_H
+const char* UnknownCharacterException::what() const noexcept {
+    return _info.c_str();
+}
+
+UnexpectedDotInNumberException::UnexpectedDotInNumberException(const int& line) : LineNumberMark(line) {
+    _info = "too many dots in the number expression at " + std::to_string(line);
+}
+
+const char* UnexpectedDotInNumberException::what() const noexcept {
+    return _info.c_str();
+}
+
+UnexpectedEOFException::UnexpectedEOFException() : _info("unexpected eof") {
+}
+
+const char* UnexpectedEOFException::what() const noexcept {
+    return _info.c_str();
+}
+} // namespace cnova::lexical

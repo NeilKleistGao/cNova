@@ -1,5 +1,7 @@
 // MIT License
 //
+// Copyright (c) 2020 NeilKleistGao
+//
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -17,14 +19,46 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// FILENAME: dfa.h
-// LAST MODIFY: 2020/9/29
 
-#ifndef CNOVA_DFA_H
-#define CNOVA_DFA_H
+#ifndef CNOVA_INPUT_STREAM_H
+#define CNOVA_INPUT_STREAM_H
 
-namespace lexical {
-//TODO:
-} // namespace lexical
+#include <fstream>
 
-#endif //CNOVA_DFA_H
+namespace cnova::io {
+class InputStream
+{
+public:
+    InputStream(const std::string&, const size_t&);
+    ~InputStream();
+
+    InputStream(const InputStream&) = delete;
+    InputStream& operator= (const InputStream&) = delete;
+    InputStream(InputStream&&) = delete;
+
+    inline char getChar() {
+        return *_forward;
+    }
+
+    inline void hopBegin() {
+        _lexemeBegin = _forward;
+    }
+
+    char moveNext();
+    char moveBack(const size_t& n = 1);
+    std::string getLexeme();
+private:
+    const size_t _SIZE;
+    char* _buffer1;
+    char* _buffer2;
+    char* _lexemeBegin;
+    char* _forward;
+    char* _current;
+    std::ifstream _in;
+
+    bool load();
+};
+
+} // namespace cnova::io
+
+#endif

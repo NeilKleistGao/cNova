@@ -1,5 +1,7 @@
 // MIT License
 //
+// Copyright (c) 2020 NeilKleistGao
+//
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -17,14 +19,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// FILENAME: constant.h
-// LAST MODIFY: 2020/9/29
 
-#ifndef CNOVA_CONSTANT_H
-#define CNOVA_CONSTANT_H
+#ifndef CNOVA_LEXICAL_CONVERTER_H
+#define CNOVA_LEXICAL_CONVERTER_H
 
-namespace lexical {
-//TODO:
-} // namespace lexical
+#include <vector>
+#include <unordered_map>
 
-#endif //CNOVA_CONSTANT_H
+#include "lexical_definition.h"
+#include "../io/input_stream.h"
+
+namespace cnova::lexical {
+class LexicalConverter {
+public:
+    explicit LexicalConverter(const std::string&);
+    ~LexicalConverter();
+
+    LexicalConverter(const LexicalConverter&) = delete;
+    LexicalConverter& operator= (const LexicalConverter&) = delete;
+
+    std::vector<TokenData> parseTokens();
+private:
+    io::InputStream* _stream;
+
+    static constexpr size_t BUFF_SIZE = 256;
+    static const std::unordered_map<std::string, TokenData::TokenType> KEYWORDS_MAPPING;
+    static const std::unordered_map<std::string, TokenData::TokenType> NOTATIONS_MAPPING;
+
+    TokenData parseVariableOrKeyword(const int&);
+    TokenData parseNumberLiteral(const int&);
+    TokenData parseStringLiteral(const int&);
+    TokenData parseNotations(const int&);
+
+    void skipComment();
+};
+
+} // namespace cnova::lexical
+
+#endif //CNOVA_LEXICAL_CONVERTER_H

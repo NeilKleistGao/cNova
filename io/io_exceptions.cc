@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2020
+// Copyright (c) 2020 NeilKleistGao
 //
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,14 +19,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// FILENAME: token.h
-// LAST MODIFY: 2020/9/29
 
-#ifndef CNOVA_TOKEN_H
-#define CNOVA_TOKEN_H
+#include "io_exceptions.h"
 
-namespace lexical {
-//TODO:
-} // namespace lexical
+#include <cstring>
 
-#endif //CNOVA_TOKEN_H
+namespace cnova::io {
+
+IOException::IOException(std::string filename) : _info(std::move(filename)) {
+    _info = "" + _info;
+}
+
+const char* IOException::what() const noexcept {
+    return _info.c_str();
+}
+
+} // namespace cnova::io

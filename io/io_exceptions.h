@@ -1,5 +1,7 @@
 // MIT License
 //
+// Copyright (c) 2020 NeilKleistGao
+//
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -17,14 +19,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// FILENAME: operator.h
-// LAST MODIFY: 2020/9/29
 
-#ifndef CNOVA_OPERATOR_H
-#define CNOVA_OPERATOR_H
+#ifndef CNOVA_IO_EXCEPTIONS_H
+#define CNOVA_IO_EXCEPTIONS_H
 
-namespace lexical {
-//TODO:
-} // namespace lexical
+#include <exception>
+#include <string>
 
-#endif //CNOVA_OPERATOR_H
+namespace cnova::io {
+
+class IOException : public std::exception {
+public:
+    explicit IOException(std::string);
+    const char* what() const noexcept override;
+    ~IOException() override = default;
+
+private:
+    std::string _info;
+};
+
+} // namespace cnova::io
+
+#endif //CNOVA_IO_EXCEPTIONS_H

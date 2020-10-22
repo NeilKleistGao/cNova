@@ -22,6 +22,8 @@
 
 #include "lexical_converter.h"
 
+#include "lexical_exceptions.h"
+
 namespace cnova::lexical {
 const std::unordered_map<std::string, TokenData::TokenType> LexicalConverter::KEYWORDS_MAPPING = {
     {"register", TokenData::TokenType::REGISTER},
@@ -101,16 +103,20 @@ LexicalConverter::~LexicalConverter() {
 
 std::vector<TokenData> LexicalConverter::parseTokens() {
     std::vector<TokenData> tokens;
+    int line_number = 1;
     while (_stream->getChar()) {
-        char temp = _stream->getChar();
+        if (_stream->getChar() == '\n') {
+            line_number++;
+        }
+
         if (isalpha(_stream->getChar()) || _stream->getChar() == '_') {
-            tokens.push_back(parseVariableOrKeyword());
+            tokens.push_back(parseVariableOrKeyword(line_number));
         }
         else if (isdigit(_stream->getChar())) {
-            tokens.push_back(parseNumberLiteral());
+            tokens.push_back(parseNumberLiteral(line_number));
         }
         else if (_stream->getChar() == '"') {
-            tokens.push_back(parseStringLiteral());
+            tokens.push_back(parseStringLiteral(line_number));
         }
         else if (!isspace(_stream->getChar())) {
             if (_stream->getChar() == '/') {
@@ -123,10 +129,10 @@ std::vector<TokenData> LexicalConverter::parseTokens() {
                     _stream->moveBack();
                 }
             }
-            tokens.push_back(parseNotations());
+            tokens.push_back(parseNotations(line_number));
         }
         else if (!isascii(_stream->getChar())) {
-            //TODO: throw
+            throw UnknownCharacterException(_stream->getChar(), line_number);
         }
 
         _stream->moveNext();
@@ -136,7 +142,7 @@ std::vector<TokenData> LexicalConverter::parseTokens() {
     return tokens;
 }
 
-TokenData LexicalConverter::parseVariableOrKeyword() {
+TokenData LexicalConverter::parseVariableOrKeyword(const int& line) {
     _stream->hopBegin();
     while (true) {
         if (isalnum(_stream->getChar()) || _stream->getChar() == '_') {
@@ -165,7 +171,7 @@ TokenData LexicalConverter::parseVariableOrKeyword() {
     return result;
 }
 
-TokenData LexicalConverter::parseNumberLiteral() {
+TokenData LexicalConverter::parseNumberLiteral(const int& line) {
     _stream->hopBegin();
     nova_float num = 0;
     bool int_flag = true;
@@ -176,7 +182,7 @@ TokenData LexicalConverter::parseNumberLiteral() {
                 int_flag = false;
             }
             else {
-                //TODO: throw
+                throw UnexpectedDotInNumberException(line);
             }
         }
         else {
@@ -206,7 +212,7 @@ TokenData LexicalConverter::parseNumberLiteral() {
     return result;
 }
 
-TokenData LexicalConverter::parseStringLiteral() {
+TokenData LexicalConverter::parseStringLiteral(const int& line) {
     _stream->hopBegin();
     _stream->moveNext();
     std::string str;
@@ -223,7 +229,7 @@ TokenData LexicalConverter::parseStringLiteral() {
     }
 
     if (!flag) {
-        //TODO: throw
+        throw UnexpectedEOFException();
     }
 
     TokenData result{};
@@ -233,7 +239,7 @@ TokenData LexicalConverter::parseStringLiteral() {
     return result;
 }
 
-TokenData LexicalConverter::parseNotations() {
+TokenData LexicalConverter::parseNotations(const int&) {
     _stream->hopBegin();
     TokenData result{};
 

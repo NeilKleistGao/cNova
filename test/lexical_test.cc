@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define NAME(__VAR__) #__VAR__
+#define NAME(__VAR__) (#__VAR__)
 
 #include <iostream>
 #include <iomanip>
@@ -48,9 +48,6 @@ int main()
             "../test/test_number.txt",
             "../test/test_symbol.txt"
     };
-//        "../test/test_symbol.txt",
-//        "../test/test_variables.txt",
-//        "../test/test.txt"};
     
     std::ofstream testOut;
     testOut.open("../test/outcome.txt");
@@ -62,7 +59,6 @@ int main()
         testOut << "Total lexeme number: " << list.size() << std::endl;
         for (auto i = list.begin(); i != list.end(); ++i)
         {
-            testOut << NAME(i->type) << ":";
             printValue(i, testOut);
             testOut << std::endl;
         }

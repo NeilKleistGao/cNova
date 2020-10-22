@@ -20,30 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "lexical_exceptions.h"
+#include "io_exceptions.h"
 
-namespace cnova::lexical {
-UnknownCharacterException::UnknownCharacterException(const char& ch, const int& line) : LineNumberMark(line) {
-    _info = &"can't solve character " [ch] ;
-    _info += " at " + std::to_string(line);
+#include <cstring>
+
+namespace cnova::io {
+
+IOException::IOException(std::string filename) : _info(std::move(filename)) {
+    _info = "" + _info;
 }
 
-const char* UnknownCharacterException::what() const noexcept {
+const char* IOException::what() const noexcept {
     return _info.c_str();
 }
 
-UnexpectedDotInNumberException::UnexpectedDotInNumberException(const int& line) : LineNumberMark(line) {
-    _info = "too many dots in the number expression at " + std::to_string(line);
-}
-
-const char* UnexpectedDotInNumberException::what() const noexcept {
-    return _info.c_str();
-}
-
-UnexpectedEOFException::UnexpectedEOFException() : _info("unexpected eof") {
-}
-
-const char* UnexpectedEOFException::what() const noexcept {
-    return _info.c_str();
-}
-} // namespace cnova::lexical
+} // namespace cnova::io

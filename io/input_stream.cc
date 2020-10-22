@@ -27,6 +27,8 @@
 #include <cstring>
 #include <cstdio>
 
+#include "io_exceptions.h"
+
 namespace cnova::io {
 
 InputStream::InputStream(const std::string& filename, const size_t& size)
@@ -34,19 +36,19 @@ InputStream::InputStream(const std::string& filename, const size_t& size)
     _current(nullptr), _forward(nullptr), _lexemeBegin(nullptr),
     _in(filename, std::ios::in)
 {
-    _buffer1 = new char[_SIZE];
-    _buffer2 = new char[_SIZE];
-    _current = _buffer1;
-    _lexemeBegin = _buffer1;
-    _forward = _buffer1;
-
     std::memset(_buffer1, 0, sizeof(char) * _SIZE);
     std::memset(_buffer2, 0, sizeof(char) * _SIZE);
     if (!_in.is_open()) {
-        //TODO: throw
-        std::cout << "failed" << std::endl;
+        _in.close();
+        throw IOException(filename);
     }
     else {
+        _buffer1 = new char[_SIZE];
+        _buffer2 = new char[_SIZE];
+        _current = _buffer1;
+        _lexemeBegin = _buffer1;
+        _forward = _buffer1;
+
         load();
     }
 }
@@ -126,14 +128,18 @@ char InputStream::moveBack(const size_t& n) {
 std::string InputStream::getLexeme() {
     std::string between;
     if (_lexemeBegin - _current < _SIZE && _lexemeBegin - _current >= 0) {
-        for (char* i = _lexemeBegin; i <= _forward; i++)
+        for (char* i = _lexemeBegin; i <= _forward; i++) {
             between += *i;
+        }
     }
     else {
-        for (char* i = _lexemeBegin; *i != EOF; i++)
+        auto another = (_current == _buffer1) ? _buffer2 : _buffer1;
+        for (char* i = _lexemeBegin; (i - another) != _SIZE; i++) {
             between += *i;
-        for (char* i = _current; i <= _forward; i++)
+        }
+        for (char* i = _current; i <= _forward; i++) {
             between += *i;
+        }
     }
     return between;
 }

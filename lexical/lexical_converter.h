@@ -46,10 +46,10 @@ private:
     static const std::unordered_map<std::string, TokenData::TokenType> KEYWORDS_MAPPING;
     static const std::unordered_map<std::string, TokenData::TokenType> NOTATIONS_MAPPING;
 
-    TokenData parseVariableOrKeyword();
-    TokenData parseNumberLiteral();
-    TokenData parseStringLiteral();
-    TokenData parseNotations();
+    TokenData parseVariableOrKeyword(const int&);
+    TokenData parseNumberLiteral(const int&);
+    TokenData parseStringLiteral(const int&);
+    TokenData parseNotations(const int&);
 
     void skipComment();
 };

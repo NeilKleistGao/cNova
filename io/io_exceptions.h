@@ -20,54 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef CNOVA_LEXICAL_EXCEPTIONS_H
-#define CNOVA_LEXICAL_EXCEPTIONS_H
+#ifndef CNOVA_IO_EXCEPTIONS_H
+#define CNOVA_IO_EXCEPTIONS_H
 
 #include <exception>
 #include <string>
 
-namespace cnova::lexical {
+namespace cnova::io {
 
-class LineNumberMark {
+class IOException : public std::exception {
 public:
-    explicit LineNumberMark(const int& line) : _line(line) {
-    }
-    ~LineNumberMark() = default;
-
-    inline int getLineNumber() const noexcept {
-        return _line;
-    }
-private:
-    int _line;
-};
-
-class UnknownCharacterException : public std::exception, public LineNumberMark {
-public:
-    UnknownCharacterException(const char&, const int&);
+    explicit IOException(std::string);
     const char* what() const noexcept override;
-    ~UnknownCharacterException() override = default;
+    ~IOException() override = default;
+
 private:
     std::string _info;
 };
 
-class UnexpectedDotInNumberException : public std::exception, public LineNumberMark {
-public:
-    explicit UnexpectedDotInNumberException(const int&);
-    ~UnexpectedDotInNumberException() override = default;
-    const char* what() const noexcept override;
-private:
-    std::string _info;
-};
+} // namespace cnova::io
 
-class UnexpectedEOFException : public std::exception {
-public:
-    UnexpectedEOFException();
-    ~UnexpectedEOFException() override = default;
-    const char* what() const noexcept override;
-private:
-    std::string _info;
-};
-
-}
-
-#endif //CNOVA_LEXICAL_EXCEPTIONS_H
+#endif //CNOVA_IO_EXCEPTIONS_H

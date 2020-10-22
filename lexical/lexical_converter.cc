@@ -23,7 +23,7 @@
 #include "lexical_converter.h"
 
 namespace cnova::lexical {
-const std::map<std::string, TokenData::TokenType> LexicalConverter::KEYWORDS_MAPPING = {
+const std::unordered_map<std::string, TokenData::TokenType> LexicalConverter::KEYWORDS_MAPPING = {
     {"register", TokenData::TokenType::REGISTER},
     {"extern", TokenData::TokenType::EXTERN},
     {"auto", TokenData::TokenType::AUTO},
@@ -43,7 +43,7 @@ const std::map<std::string, TokenData::TokenType> LexicalConverter::KEYWORDS_MAP
     {"nullptr", TokenData::TokenType::NULLPTR}
 };
 
-const std::map<std::string, TokenData::TokenType> LexicalConverter::NOTATIONS_MAPPING = {
+const std::unordered_map<std::string, TokenData::TokenType> LexicalConverter::NOTATIONS_MAPPING = {
     {"<", TokenData::TokenType::LESS},
     {"<<=", TokenData::TokenType::LEFT_SHIFT_AND_ASSIGN},
     {"<<", TokenData::TokenType::LEFT_SHIFT},
@@ -102,6 +102,7 @@ LexicalConverter::~LexicalConverter() {
 std::vector<TokenData> LexicalConverter::parseTokens() {
     std::vector<TokenData> tokens;
     while (_stream->getChar()) {
+        char temp = _stream->getChar();
         if (isalpha(_stream->getChar()) || _stream->getChar() == '_') {
             tokens.push_back(parseVariableOrKeyword());
         }
@@ -111,14 +112,24 @@ std::vector<TokenData> LexicalConverter::parseTokens() {
         else if (_stream->getChar() == '"') {
             tokens.push_back(parseStringLiteral());
         }
-        else if (!isblank(_stream->getChar())) {
+        else if (!isspace(_stream->getChar())) {
+            if (_stream->getChar() == '/') {
+                _stream->moveNext();
+                if (_stream->getChar() == '/') {
+                    skipComment();
+                    continue;
+                }
+                else {
+                    _stream->moveBack();
+                }
+            }
             tokens.push_back(parseNotations());
         }
-        else {
+        else if (!isascii(_stream->getChar())) {
             //TODO: throw
         }
 
-//        _stream->moveNext();
+        _stream->moveNext();
         _stream->hopBegin();
     }
 
@@ -151,12 +162,48 @@ TokenData LexicalConverter::parseVariableOrKeyword() {
         result.data.string_data = lexemeCString;
     }
 
-    _stream->hopBegin();
     return result;
 }
 
 TokenData LexicalConverter::parseNumberLiteral() {
-    
+    _stream->hopBegin();
+    nova_float num = 0;
+    bool int_flag = true;
+    nova_int per = 1;
+    while (isdigit(_stream->getChar()) || _stream->getChar() == '.') {
+        if (_stream->getChar() == '.') {
+            if (int_flag) {
+                int_flag = false;
+            }
+            else {
+                //TODO: throw
+            }
+        }
+        else {
+            if (int_flag) {
+                num *= 10;
+                num += static_cast<int>(_stream->getChar() - '0');
+            }
+            else {
+                per *= 10;
+                num += static_cast<nova_float>(_stream->getChar() - '0') / per;
+            }
+        }
+
+        _stream->moveNext();
+    }
+
+    TokenData result{};
+    if (int_flag) {
+        result.type = TokenData::TokenType::VAL_INTEGER;
+        result.data.int_data = static_cast<nova_int>(num);
+    }
+    else {
+        result.type = TokenData::TokenType::VAL_FLOAT;
+        result.data.float_data = num;
+    }
+
+    return result;
 }
 
 TokenData LexicalConverter::parseStringLiteral() {
@@ -207,7 +254,14 @@ TokenData LexicalConverter::parseNotations() {
         ch = _stream->getChar();
     }
 
+    _stream->moveBack();
     return result;
+}
+
+void LexicalConverter::skipComment() {
+    while (_stream->getChar() != '\n') {
+        _stream->moveNext();
+    }
 }
 
 } // namespace cnova::lexical

@@ -25,21 +25,26 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cstdio>
 
 namespace cnova::io {
 
 InputStream::InputStream(const std::string& filename, const size_t& size)
     : _SIZE(size), _buffer1(nullptr), _buffer2(nullptr),
-    _current(nullptr), _forward(nullptr), _lexemeBegin(nullptr)
+    _current(nullptr), _forward(nullptr), _lexemeBegin(nullptr),
+    _in(filename, std::ios::in)
 {
-    _in.open(filename);
     _buffer1 = new char[_SIZE];
     _buffer2 = new char[_SIZE];
     _current = _buffer1;
     _lexemeBegin = _buffer1;
     _forward = _buffer1;
+
+    std::memset(_buffer1, 0, sizeof(char) * _SIZE);
+    std::memset(_buffer2, 0, sizeof(char) * _SIZE);
     if (!_in.is_open()) {
         //TODO: throw
+        std::cout << "failed" << std::endl;
     }
     else {
         load();

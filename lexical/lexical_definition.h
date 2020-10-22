@@ -36,13 +36,11 @@ static constexpr size_t POINTER_SIZE = sizeof(void*);
     using nova_float = float;
     using nova_string = char*;
     using nova_pointer = void*;
-    static constexpr size_t PRECISION = 7;
 #else
     using nova_int = long long;
     using nova_float = double;
     using nova_string = char*;
     using nova_pointer = void*;
-    static constexpr size_t PRECISION = 15;
 #endif
 
 struct TokenData {

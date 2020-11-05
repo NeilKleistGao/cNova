@@ -46,7 +46,7 @@
 | bit not | ~ | `~444` |
 | left shift | << | `10 << 2` |
 | right shift | >> | `10 >> 2` |
-| comment | /**/ | `/*hello*/` |
+| comment | // | `//hello` |
 | assign | = | `x = 5;` |
 | equal | == | `x == y` |
 | not equal | != | `x != y` |
@@ -64,11 +64,13 @@
 | mult and assign | *= | `a *= 2` |
 | div and assign | /= | `a /= 2` |
 | and and assign | &= | `a &= 2` |
-| or and assign | |= | `a |= 2` |
+| or and assign | \|= | `a |= 2` |
 | xor and assign | ^= | `a ^= 2` |
 | power and assign | **= | `a **= 2` |
 | left shift and assign | <<= | `a <<= 2` |
 | right shift and assign | >>= | `a >>= 2` |
+| increment | ++ | `a++;` |
+| decrement | -- | `a--;` |
 
 ## variable name and function name
 begin with an alpha or an underline and it can include alphanumeric and underline.

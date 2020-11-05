@@ -36,8 +36,6 @@ InputStream::InputStream(const std::string& filename, const size_t& size)
     _current(nullptr), _forward(nullptr), _lexemeBegin(nullptr),
     _in(filename, std::ios::in)
 {
-    std::memset(_buffer1, 0, sizeof(char) * _SIZE);
-    std::memset(_buffer2, 0, sizeof(char) * _SIZE);
     if (!_in.is_open()) {
         _in.close();
         throw IOException(filename);
@@ -48,6 +46,9 @@ InputStream::InputStream(const std::string& filename, const size_t& size)
         _current = _buffer1;
         _lexemeBegin = _buffer1;
         _forward = _buffer1;
+
+        std::memset(_buffer1, 0, sizeof(char) * _SIZE);
+        std::memset(_buffer2, 0, sizeof(char) * _SIZE);
 
         load();
     }

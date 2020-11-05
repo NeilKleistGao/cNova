@@ -20,11 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#define NAME(__VAR__) (#__VAR__)
-
 #include <iostream>
 #include <iomanip>
-#include "lexical/lexical_converter.h"
+#include "../lexical/lexical_converter.h"
 
 using namespace cnova::lexical;
 using namespace cnova::io;
@@ -43,14 +41,15 @@ void printValue(std::vector<TokenData>::iterator iterator, std::ofstream& of){
 
 int main()
 {
-    std::array<std::string, 3> files = {
-            "../test/single_judge.txt",
-            "../test/test_number.txt",
-            "../test/test_symbol.txt"
+    std::array<std::string, 4> files = {
+            "../test/test_data/lexical/test_keyword.txt",
+            "../test/test_data/lexical/test_number.txt",
+            "../test/test_data/lexical/test_symbol.txt",
+            "../test/test_data/lexical/test_variables.txt"
     };
     
     std::ofstream testOut;
-    testOut.open("../test/outcome.txt");
+    testOut.open("outcome.txt");
     for (const auto& file : files)
     {
         testOut << file << std::endl;

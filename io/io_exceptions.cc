@@ -22,12 +22,10 @@
 
 #include "io_exceptions.h"
 
-#include <cstring>
-
 namespace cnova::io {
 
 IOException::IOException(std::string filename) : _info(std::move(filename)) {
-    _info = "" + _info;
+    _info = "can't open file " + _info;
 }
 
 const char* IOException::what() const noexcept {

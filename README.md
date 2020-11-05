@@ -55,7 +55,7 @@ extern x, y, z;
 return x + y + z;
 ```
 
-### closure
+### access C++
 You can use `this` to access member variables or member function in current class:
 ```c++
 auto player = this;

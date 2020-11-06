@@ -1,1 +1,1 @@
-test_data/lexical/single_judge.txt
+test/test_data/lexical/test_keyword.txt

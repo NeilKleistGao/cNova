@@ -41,11 +41,12 @@ void printValue(std::vector<TokenData>::iterator iterator, std::ofstream& of){
 
 int main()
 {
-    std::array<std::string, 4> files = {
+    std::array<std::string, 5> files = {
             "../test/test_data/lexical/test_keyword.txt",
             "../test/test_data/lexical/test_number.txt",
             "../test/test_data/lexical/test_symbol.txt",
-            "../test/test_data/lexical/test_variables.txt"
+            "../test/test_data/lexical/test_variables.txt",
+            "../test/test_data/lexical/test.txt"
     };
     
     std::ofstream testOut;

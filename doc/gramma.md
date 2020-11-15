@@ -9,7 +9,7 @@
 + extern_line -> `extern` var_list `;`
 + var_list -> `var` | `var` `,` varlist
 + calc_line -> expr `;` | left_type `=` calc_line
-+ expr -> `(`expr`)` | expr `+` expr | expr `-` expr | expr `*` expr | expr `/` expr | expr `**` expr | expr `&` expr | expr `|` expr | expr `^` expr | expr `<<` expr | expr `>>` expr | expr `+` expr | expr `==` expr | expr `!=` expr | expr `<` expr | expr `>` expr | expr `<=` expr | expr `>=` expr | expr `&&` expr | expr `||` expr | expr `->` expr | expr `+=` expr | expr `-=` expr | expr `*=` expr | expr `/=` expr | expr `**=` expr | expr `&=` expr | expr `|=` expr | expr `^=` expr | expr `<<=` expr | expr `>>=` expr | `-` expr | `~` expr | `!` expr | expr `++` | expr `--` | `++` expr | `--` expr | `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr`
++ expr -> `(`type`)`expr | `(`expr`)` | expr `+` expr | expr `-` expr | expr `*` expr | expr `/` expr | expr `**` expr | expr `&` expr | expr `|` expr | expr `^` expr | expr `<<` expr | expr `>>` expr | expr `+` expr | expr `==` expr | expr `!=` expr | expr `<` expr | expr `>` expr | expr `<=` expr | expr `>=` expr | expr `&&` expr | expr `||` expr | expr `->` expr | expr `+=` expr | expr `-=` expr | expr `*=` expr | expr `/=` expr | expr `**=` expr | expr `&=` expr | expr `|=` expr | expr `^=` expr | expr `<<=` expr | expr `>>=` expr | `-` expr | `~` expr | `!` expr | expr `++` | expr `--` | `++` expr | `--` expr | `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr` | `true` | `false`
 + left_type -> `var` | `var[literal]` | `var[var]`
 + dict_list -> dict_type | `,` dict_type
 + dict_type -> `{var, literal}` | `{var, var}` | `{literal, literal}` | `{literal, var}`
@@ -22,6 +22,7 @@
 + if_block -> `if(` expr `){` S `}` | `if(` expr `){` S `}`else_if_block | `if(` expr `){` S `}`else_if_block`else{` S `}`
 + else_if_block -> `else if(` expr `){` S `}` | `else if(` expr `){` S `}` else_if_block
 + while_block -> `while(` expr `){` S `}`
++ type -> `int` | `float` | `bool` | `string`
 
 ## tips
 + `var` means both variable and keyword `this`

@@ -1,7 +1,9 @@
+//正例
+#include
+#define
 register
 extern
 auto
-cNova_token
 return
 if
 else
@@ -15,12 +17,15 @@ int
 float
 bool
 string
-nullptr 
+nullptr
 
+//反例
+REGISTER
+EXTERN
+AUTO
+RETURN
 const 
 define
-long long
 long
 True
-False
-                              
+False                              

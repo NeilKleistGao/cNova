@@ -26,15 +26,90 @@
 
 using namespace cnova::lexical;
 using namespace cnova::io;
-
-void printValue(std::vector<TokenData>::iterator iterator, std::ofstream& of){
-    if (iterator->type == TokenData::TokenType::VAL_FLOAT) {
-        of << iterator->data.float_data;
+namespace TestType
+{
+    std::string tokenTypeList[] = {"REGISTER",
+                                   "EXTERN",
+                                   "AUTO",
+                                   "RETURN",
+                                   "IF",
+                                   "ELSE",
+                                   "WHILE",
+                                   "THIS",
+                                   "TRUE",
+                                   "FALSE",
+                                   "BREAK",
+                                   "CONTINUE",
+                                   "INT",
+                                   "FLOAT",
+                                   "BOOL",
+                                   "STRING",
+                                   "VAL_INTEGER",
+                                   "VAL_FLOAT",
+                                   "VAL_STRING",
+                                   "NULLPTR",
+                                   "LESS",
+                                   "LEFT_SHIFT_AND_ASSIGN",
+                                   "LEFT_SHIFT",
+                                   "LESS_OR_EQUAL",
+                                   "GREATER_OR_EQUAL",
+                                   "GREATER",
+                                   "RIGHT_SHIFT_AND_ASSIGN",
+                                   "RIGHT_SHIFT",
+                                   "ADD",
+                                   "INCREMENT",
+                                   "ADD_AND_ASSIGN",
+                                   "SUB",
+                                   "SUB_AND_ASSIGN",
+                                   "DECREASE",
+                                   "MULTIPLY_AND_ASSIGN",
+                                   "POWER_AND_ASSIGN",
+                                   "POWER",
+                                   "MULTIPLY",
+                                   "DIV",
+                                   "DIV_AND_ASSIGN",
+                                   "LOGICAL_AND",
+                                   "BIT_AND",
+                                   "AND_AND_ASSIGN",
+                                   "BIT_OR",
+                                   "LOGICAL_OR",
+                                   "OR_AND_ASSIGN",
+                                   "BIT_XOR",
+                                   "XOR_AND_ASSIGN",
+                                   "BIT_NOT",
+                                   "EQUAL",
+                                   "ASSIGN",
+                                   "LOGICAL_NOT",
+                                   "NOT_EQUAL",
+                                   "LEFT_PARENTHESES",
+                                   "RIGHT_PARENTHESES",
+                                   "LEFT_SQUARE_BRACKETS",
+                                   "RIGHT_SQUARE_BRACKETS",
+                                   "LEFT_BRACES",
+                                   "RIGHT_BRACES",
+                                   "COMMA",
+                                   "PTR",
+                                   "SEMICOLON",
+                                   "VARIABLE",
+                                   "MOD",
+                                   "MOD_AND_EQUAL"};
+}
+void printValue(std::vector<TokenData>::iterator iterator, std::ofstream &of)
+{
+    if (iterator->type == TokenData::TokenType::VAL_FLOAT)
+    {
+        of <<std::setprecision(7)<< iterator->data.float_data;
     }
-    else if (iterator->type == TokenData::TokenType::VAL_INTEGER) {
+    else if (iterator->type == TokenData::TokenType::VAL_INTEGER)
+    {
         of << iterator->data.int_data;
     }
-    else if (iterator->type == TokenData::TokenType::VAL_STRING) {
+    else if (iterator->type == TokenData::TokenType::VAL_STRING)
+    {
+        of << iterator->data.string_data;
+    }
+    else if (iterator->type == TokenData::TokenType::VARIABLE)
+    {
         of << iterator->data.string_data;
     }
 }
@@ -42,16 +117,15 @@ void printValue(std::vector<TokenData>::iterator iterator, std::ofstream& of){
 int main()
 {
     std::array<std::string, 5> files = {
-            "../test/test_data/lexical/test_keyword.txt",
-            "../test/test_data/lexical/test_number.txt",
-            "../test/test_data/lexical/test_symbol.txt",
-            "../test/test_data/lexical/test_variables.txt",
-            "../test/test_data/lexical/test.txt"
-    };
-    
+        "../test/test_data/lexical/test_keyword.txt",
+        "../test/test_data/lexical/test_number.txt", 
+        "../test/test_data/lexical/test_string.txt",
+        "../test/test_data/lexical/test_symbol.txt",
+        "../test/test_data/lexical/test_variables.txt"};
+
     std::ofstream testOut;
-    testOut.open("outcome.txt");
-    for (const auto& file : files)
+    testOut.open("test/outcome.txt");
+    for (const auto &file : files)
     {
         testOut << file << std::endl;
         auto converter = new LexicalConverter(file);
@@ -59,6 +133,7 @@ int main()
         testOut << "Total lexeme number: " << list.size() << std::endl;
         for (auto i = list.begin(); i != list.end(); ++i)
         {
+            testOut << TestType::tokenTypeList[i->type] << " ";
             printValue(i, testOut);
             testOut << std::endl;
         }

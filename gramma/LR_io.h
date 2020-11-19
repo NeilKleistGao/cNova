@@ -77,5 +77,10 @@ namespace gen_LR
             }
         }
     }
-}; // namespace gen_LR
+    
+    //从文件读取文法并生成产生式
+    void genProduction(std::string &filename);
 
+    //todo:把main中的改为这个。用文件读取。读data中的input.txt
+    void getV_T(std::string&filename);
+}; // namespace gen_LR

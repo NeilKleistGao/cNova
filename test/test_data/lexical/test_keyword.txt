@@ -1,6 +1,4 @@
 //正例
-#include
-#define
 register
 extern
 auto

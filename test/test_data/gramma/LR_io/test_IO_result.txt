@@ -1,0 +1,22 @@
+break_line ->break; 
+while_block ->while( expr ){ S } 
+extern_line ->extern var_list ; 
+return_line ->return var_list ; 
+block ->if_block |while_block 
+type ->int |float |bool |string 
+line ->extern_line |calc_line |return_line |declaration_line |register_line |break_line |continue_line 
+expr ->( ) expr |( expr ) |expr + expr |expr - expr |expr * expr |expr / expr |expr ** expr |expr & expr |expr | expr |expr ^ expr |expr << expr |expr >> expr |expr + expr |expr == expr |expr != expr |expr < expr |expr > expr |expr <= expr |expr >= expr |expr && expr |expr || expr |expr -> expr |expr += expr |expr -= expr |expr *= expr |expr /= expr |expr **= expr |expr &= expr |expr |= expr |expr ^= expr |expr <<= expr |expr >>= expr |- expr |~ expr |! expr |expr ++ |expr -- |++ expr |-- expr |{ dict_list } |[ arr_list ] |var |literal |nullptr |true |false 
+if_block ->if( expr ){ S } |if( expr ){ S } else_if_block |if( expr ){ S } else_if_block else{ S } 
+sentence ->line |block 
+var_list ->var |var , 
+arr_list ->var |literal |, var |, literal 
+S' ->S 
+S ->sentence |sentence S 
+calc_line ->expr ; |left_type = calc_line 
+left_type ->var |var[literal] |var[var] 
+dict_list ->dict_type |, dict_type 
+dict_type ->{var, literal} |{var, var} |{literal, literal} |{literal, var} 
+declaration_line ->auto var = var; |auto var = literal; 
+else_if_block ->else if( expr ){ S } |else if( expr ){ S } else_if_block 
+continue_line ->continue; 
+register_line ->register literal; 

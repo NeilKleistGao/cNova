@@ -1,0 +1,101 @@
+extern
+;
+var
+var
+,
+;
+=
+(
+)
+(
+)
++
+-
+*
+/
+**
+&
+|
+^
+<<
+>>
++
+==
+!=
+<
+>
+<=
+>=
+&&
+||
+->
++=
+-=
+*=
+/=
+**=
+&=
+|=
+^=
+<<=
+>>=
+-
+~
+!
+++
+--
+++
+--
+{
+}
+[
+]
+var
+literal
+nullptr
+true
+false
+var
+var[literal]
+var[var]
+,
+{var, literal}
+{var, var}
+{literal, literal}
+{literal, var}
+var
+literal
+, var
+, literal
+return
+;
+auto var = var;
+auto var = literal;
+register literal;
+break;
+continue;
+if(
+){
+}
+if(
+){
+}
+if(
+){
+}
+else{
+}
+else if(
+){
+}
+else if(
+){
+}
+while(
+){
+}
+int
+float
+bool
+string
+var

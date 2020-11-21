@@ -41,6 +41,7 @@ void gen_LR::generateFIRST()
 
     do
     {
+        changed=false;
         for (auto productions : gen_LR::tot_production)
         {
             gen_LR::P_right productionRight = productions.second;

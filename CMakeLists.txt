@@ -4,5 +4,5 @@ project(cNova)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(cNova test/test_LR_io.cc
-        gramma/LR_io.h
+        gramma/LR_io.hpp
 )

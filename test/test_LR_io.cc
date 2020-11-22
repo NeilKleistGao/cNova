@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "../gramma/LR_io.h"
+#include "../gramma/LR_io.hpp"
 using namespace std;
 
 int main()

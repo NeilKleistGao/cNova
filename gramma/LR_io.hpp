@@ -84,7 +84,7 @@ namespace gen_LR
     }
 
     //从文件读取文法并生成产生式
-    void genProduction(const std::string &filename = "../data/gramma.txt")
+   void genProduction(const std::string &filename = "../data/gramma.txt")
     {
         std::string s, s_right;
         std::vector<std::string> tmp_result;

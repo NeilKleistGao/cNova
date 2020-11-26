@@ -46,21 +46,36 @@ namespace gen_LR
         size_t dot_index;         //·的位置，规定·位于dot_index的符号的前面. dot_index为长度时是说明读完
         P_left p_left;            //产生式左部
         std::vector<V_T> p_right; //产生式右部
+        std::vector<V_T> forword; //展望符
     };
 
     //一个项目
     struct Item
     {
-        std::vector<dot_P> P_list; //一个项目的所有带点产生式
         int id;
+        std::vector<dot_P> P_list; //一个项目的所有带点产生式
+        bool operator()(const Item& a,const Item& b)const{
+            
+            if(a.id==b.id){
+                return a.P_list == b.P_list;
+            }
+        }
     };
 
+    struct Item_cmp{
+        bool operator()(const Item& a,const Item& b)const{
+            return a.P_list == b.P_list;
+        }
+    }    
+    //存放item
+    std::set<Item,Item_cmp> items;
     struct Edge
     {
         int to;        //指向的结点
         V_T condition; //读入condition后跳转到to
     };
 
+  
     std::vector<std::vector<Edge>> G; //项目集规范族.G[i]表示第i个结点的边
 
     //字符串分割函数。str为源字符串，pattern为要以此为分割的匹配串，result为最终的结果

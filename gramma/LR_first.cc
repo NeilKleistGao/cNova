@@ -1,4 +1,4 @@
-#include "LR_io.h"
+#include "LR_io.hpp"
 #include "LR_first.h"
 //generate FIRST set
 //Attention: the grammar can't have empty productions!!!

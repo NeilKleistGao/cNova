@@ -1,4 +1,4 @@
-#include <stdc++.h>
+
 namespace gen_LR
 {
     using Character_set=std::set<V_T>;

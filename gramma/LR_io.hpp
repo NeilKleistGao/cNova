@@ -66,7 +66,7 @@ namespace gen_LR
         bool operator()(const Item& a,const Item& b)const{
             return a.P_list == b.P_list;
         }
-    }    
+    };    
     //存放item
     std::set<Item,Item_cmp> items;
     struct Edge

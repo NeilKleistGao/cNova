@@ -3,8 +3,6 @@
 
 namespace LR::gen
 {
-
-
     class LR_generator
     {
     private:
@@ -32,7 +30,7 @@ namespace LR::gen
         std::set<def::V_T> generateFirst(std::vector<def::V_T>);
 
         //求一个带点的产生式的闭包
-        std::unordered_map<def::dot_P, std::set<def::V_T>,def::dot_P_Hash> generateClosure(std::unordered_map<def::dot_P, std::set<def::V_T>,def::dot_P_Hash> &);
+        typename def::dot_P_forward LR_generator::generateClosure(typename def::dot_P_forward &I);
 
         //得到生成的图
         void generateGraph();

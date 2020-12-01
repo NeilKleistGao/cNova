@@ -30,8 +30,9 @@
 + H -> else_if_block| `#`
 + while_block -> `while(` expr `){` S `}`
 + type -> `int` | `float` | `bool` | `string`
-+ expr -> `(`type`)`expr | `(`expr`)` | expr `+` expr | expr `-` expr | expr `*` expr | expr `/` expr | expr `**` expr | expr `&` expr | expr `|` expr | expr `^` expr | expr `<<` expr | expr `>>` expr | expr `+` expr | expr `==` expr | expr `!=` expr | expr `<` expr | expr `>` expr | expr `<=` expr | expr `>=` expr | expr `&&` expr | expr `||` expr | expr `->` expr | expr `+=` expr | expr `-=` expr | expr `*=` expr | expr `/=` expr | expr `**=` expr | expr `&=` expr | expr `|=` expr | expr `^=` expr | expr `<<=` expr | expr `>>=` expr | `-` expr | `~` expr | `!` expr | expr `++` | expr `--` | `++` expr | `--` expr | `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr` | `true` | `false`
-
++ expr -> `(`type`)`expr | `(`expr`)` | expr bop expr | uop expr |  expr uop |  `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr` | `true` | `false`
++ bop -> `+`|`-`|`*`|`/`|`**`|`&`|`|`|`^`|`<<`|`>>`|`+`|`==`|`!=`|`<`|`>`|`<=`|`>=`|`&&`|`||`|`->`|`+=`|`-=`|`*=`|`/=`|`**=`|`&=`|`|=`|`^=`|`<<=`|`>>=`
++ uop -> `~`|`!`|`++`|`--`
 ## tips
 + `var` means both variable and keyword `this`
 + `#` means null

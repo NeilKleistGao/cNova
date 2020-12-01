@@ -20,39 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef CNOVA_PARSER_H
-#define CNOVA_PARSER_H
-#include <vector>
-#include "../lexical/lexical_definition.h"
-
+#include "parser.h"
 namespace cnova::parser
 {
-    //递归调用预测分析
-    //前提是First集没有冲突
-    class Parser
+    void Parser::parserStart(){
+        cur=tokenStream.begin();
+        procS();
+    }
+    void Parser::procS()
     {
-    private:
-        std::vector<lexical::TokenData> tokenStream;  //输入字符序列流
-        std::vector<lexical::TokenData>::iterator cur;  //字符序列流指针
+        procSentence();
+        procA();
+    }
 
-        // //求所有符号的First集
-        // void getTotFirst();
+    void Parser::procSentence(){
+        //如果当前的符号是line的First集中的元素
+        //则执行    procLine();
 
-        // //std::multimap<V_T, V_T, V_T_Hash> firstSet;
+        //如果当前的符号是block的First集中的元素
+        //则执行    procBlock();
 
-        //解析文法符号
-        void procS();
-        void procSentence();
-        void procA();
-        void procLine();
-        void procBlock();
-        void procExtern_line();
-        void procVar_list();
-        void procB();
+        //否则      报错
+    }
+    void Parser::procA(){
+        //如果当前的符号是S的First集中的元素
+        //则执行    procS();
+       
+        //否则      pass
+    }
+    void Parser::procLine(){
+        //if *cur in first(extern_line)
+        //procExtern_line()
+        //if *cur in first(calc_line)
+        //procCalc_line()
+        //...
+        //else error()
 
-    public:
-        void parserStart(); //开始语法分析，即S'->S
-    };
+    }
 } // namespace cnova::parser
-
-#endif

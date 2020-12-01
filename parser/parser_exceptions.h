@@ -20,39 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef CNOVA_PARSER_H
-#define CNOVA_PARSER_H
-#include <vector>
-#include "../lexical/lexical_definition.h"
-
+#ifndef CNOVA_PARSER_EXCEPTIONS_H
+#define CNOVA_PARSER_EXCEPTIONS_H
+#include <exception>
+#include <string>
 namespace cnova::parser
 {
-    //递归调用预测分析
-    //前提是First集没有冲突
-    class Parser
-    {
-    private:
-        std::vector<lexical::TokenData> tokenStream;  //输入字符序列流
-        std::vector<lexical::TokenData>::iterator cur;  //字符序列流指针
+    class ParserException : public std::exception {
+public:
+    //应当在token序列记录行数才能报错
+    explicit ParserException(std::string);
+    const char* what() const noexcept override;
+    ~ParserException() override = default;
 
-        // //求所有符号的First集
-        // void getTotFirst();
+private:
+    std::string _info;
+};
+    
+} // namespace name
 
-        // //std::multimap<V_T, V_T, V_T_Hash> firstSet;
-
-        //解析文法符号
-        void procS();
-        void procSentence();
-        void procA();
-        void procLine();
-        void procBlock();
-        void procExtern_line();
-        void procVar_list();
-        void procB();
-
-    public:
-        void parserStart(); //开始语法分析，即S'->S
-    };
-} // namespace cnova::parser
 
 #endif

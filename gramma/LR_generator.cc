@@ -94,10 +94,9 @@ namespace LR::gen
     }
     //输入：带点的产生式的集合I
     //输出：带点的产生式的集合J
-    std::unordered_map<def::dot_P, std::set<def::V_T>,def::dot_P_Hash> LR_generator::generateClosure(std::unordered_map<def::dot_P, std::set<def::V_T>,def::dot_P_Hash> &I)
+    typename def::dot_P_forward LR_generator::generateClosure(typename def::dot_P_forward &I)
     {
         auto J = I;
-
         auto J_new=J;
         do
         {

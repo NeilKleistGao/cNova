@@ -46,6 +46,7 @@
     using Character_set = std::set<def::V_T>;
      //带有展望符的带点产生式. first为带点的产生式，second为展望符
     using dot_P_forward = std::unordered_map<def::dot_P, std::set<V_T>,def::dot_P_Hash>;
+    
    
     //带点的产生式
     struct dot_P

@@ -42,13 +42,38 @@ namespace cnova::parser
 
         //解析文法符号
         void procS();
-        void procSentence();
         void procA();
+        void procSentence();
         void procLine();
         void procBlock();
-        void procExtern_line();
-        void procVar_list();
+        void procExternLine();
+        void procVarList();
         void procB();
+        void procCalLine();
+        void procLeftType();
+        void procC();
+        void procDictList();
+        void procDictType();
+        void procD();
+        void procArrList();
+        void procE();
+        void procReturnLine();
+        void procDeclarationLine();
+        void procF();
+        void procRegisterLine();
+        void procBreakLine();
+        void procContinueLine();
+        void procIfBlock();
+        void procG();
+        void procElseIfBlock();
+        void procH();
+        void procWhileBlock();
+        void procType();
+        void procExpr();
+        void procK();
+        void procJ();
+        void procBop();
+        void procUop();
 
     public:
         void parserStart(); //开始语法分析，即S'->S

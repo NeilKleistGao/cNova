@@ -30,7 +30,9 @@
 + H -> else_if_block| `#`
 + while_block -> `while(` expr `){` S `}`
 + type -> `int` | `float` | `bool` | `string`
-+ expr -> `(`type`)`expr | `(`expr`)` | expr bop expr | uop expr |  expr uop |  `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr` | `true` | `false`
++ expr-> `(`J K| uop expr K | `{`dict_list`}` K | `[`arr_list`]` K | `var` K| `literal` K| `nullptr` K| `true` K| `false` K
++ K -> bop expr K |uop K | `#`
++ J->type`)`expr|expr`)` 
 + bop -> `+`|`-`|`*`|`/`|`**`|`&`|`|`|`^`|`<<`|`>>`|`+`|`==`|`!=`|`<`|`>`|`<=`|`>=`|`&&`|`||`|`->`|`+=`|`-=`|`*=`|`/=`|`**=`|`&=`|`|=`|`^=`|`<<=`|`>>=`
 + uop -> `~`|`!`|`++`|`--`
 ## tips

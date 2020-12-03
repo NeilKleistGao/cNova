@@ -11,3 +11,11 @@
 - H: `else` | `#`
 - else_if_block: `else` 
 - G: `else` 
+- E：`var` |`literal`
+- return_line : `return`
+- declaration_line: `auto var =`
+- F: `literal;`
+- register_line: `register literal`
+- break_line: `break`
+- continue_line: `continue`
+- if_block:`if(`

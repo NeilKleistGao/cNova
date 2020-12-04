@@ -35,6 +35,8 @@
 + J->type`)`expr|expr`)` 
 + bop -> `+`|`-`|`*`|`/`|`**`|`&`|`|`|`^`|`<<`|`>>`|`+`|`==`|`!=`|`<`|`>`|`<=`|`>=`|`&&`|`||`|`->`|`+=`|`-=`|`*=`|`/=`|`**=`|`&=`|`|=`|`^=`|`<<=`|`>>=`
 + uop -> `~`|`!`|`++`|`--`
++ expr -> `fname();` | `fnanem(` plist `);`
++ plist -> expr | expr `,` plist
 ## tips
 + `var` means both variable and keyword `this`
 + `#` means null

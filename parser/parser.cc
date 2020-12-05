@@ -21,8 +21,14 @@
 // SOFTWARE.
 
 #include "parser.h"
+#include "parser_exceptions.h"
+
+
 namespace cnova::parser
 {
+    //简化名命空间
+    typedef lexical::TokenData::TokenType terminalEnum;
+
     void Parser::parserStart(){
         cur=tokenStream.begin();
         procS();
@@ -41,12 +47,47 @@ namespace cnova::parser
         //则执行    procBlock();
 
         //否则      报错
+        auto type=(*cur).type;
+        if(type==terminalEnum::EXTERN||type==terminalEnum::BIT_NOT||
+        type==terminalEnum::LOGICAL_NOT||type==terminalEnum::INCREMENT||
+        type==terminalEnum::DECREASE||type==terminalEnum::LEFT_PARENTHESES||
+        type==terminalEnum::LEFT_SQUARE_BRACKETS||type==terminalEnum::LEFT_BRACES||
+        type==terminalEnum::VARIABLE||type==terminalEnum::VAL_STRING||
+        type==terminalEnum::NULLPTR||type==terminalEnum::TRUE||type==terminalEnum::FALSE||
+        type==terminalEnum::RETURN||type==terminalEnum::AUTO||type==terminalEnum::REGISTER||
+        type==terminalEnum::BREAK||type==terminalEnum::CONTINUE)
+        {
+            procLine();
+        }
+        else if(type==terminalEnum::IF||type==terminalEnum::WHILE)
+        {
+            procBlock();
+        }
+        else
+        {
+            throw parser::ParserException("sentence");
+        }
+        return;
     }
     void Parser::procA(){
         //如果当前的符号是S的First集中的元素
         //则执行    procS();
        
         //否则      pass
+        auto type=(*cur).type;
+        if(type==terminalEnum::EXTERN||type==terminalEnum::BIT_NOT||
+        type==terminalEnum::LOGICAL_NOT||type==terminalEnum::INCREMENT||
+        type==terminalEnum::DECREASE||type==terminalEnum::LEFT_PARENTHESES||
+        type==terminalEnum::LEFT_SQUARE_BRACKETS||type==terminalEnum::LEFT_BRACES||
+        type==terminalEnum::VARIABLE||type==terminalEnum::VAL_STRING||
+        type==terminalEnum::NULLPTR||type==terminalEnum::TRUE||type==terminalEnum::FALSE||
+        type==terminalEnum::RETURN||type==terminalEnum::AUTO||type==terminalEnum::REGISTER||
+        type==terminalEnum::BREAK||type==terminalEnum::CONTINUE||type==terminalEnum::IF||
+        type==terminalEnum::WHILE)
+        {
+            procS();
+        }
+        return;
     }
     void Parser::procLine(){
         //if *cur in first(extern_line)
@@ -55,6 +96,93 @@ namespace cnova::parser
         //procCalc_line()
         //...
         //else error()
-
+        auto type=(*cur).type;
+        if(type==terminalEnum::EXTERN)
+        {
+            procExternLine();
+        }
+        else if(type==terminalEnum::BIT_NOT||
+        type==terminalEnum::LOGICAL_NOT||type==terminalEnum::INCREMENT||
+        type==terminalEnum::DECREASE||type==terminalEnum::LEFT_PARENTHESES||
+        type==terminalEnum::LEFT_SQUARE_BRACKETS||type==terminalEnum::LEFT_BRACES||
+        type==terminalEnum::VARIABLE||type==terminalEnum::VAL_STRING||
+        type==terminalEnum::NULLPTR||type==terminalEnum::TRUE||type==terminalEnum::FALSE)
+        {  
+            procCalLine();
+        }
+        else if(type==terminalEnum::RETURN)
+        {
+            procReturnLine();
+        }
+        else if(type==terminalEnum::AUTO)
+        {
+            procDeclarationLine();
+        }
+        else if(type==terminalEnum::REGISTER)
+        {
+            procRegisterLine();
+        }
+        else if(type==terminalEnum::BREAK)
+        {   
+            procBreakLine();
+        }
+        else if(type==terminalEnum::CONTINUE)
+        { 
+            procContinueLine();
+        }
+        else
+        {
+            throw parser::ParserException("line");
+        }
+        return;
+    }
+    void Parser::procBlock(){
+        auto type=(*cur).type;
+        if(type==terminalEnum::IF)
+        {
+            procIfBlock();
+        }
+        else if(type==terminalEnum::WHILE)
+        {
+            procWhileBlock();
+        }
+        else
+        {
+            throw parser::ParserException("bolck");
+        }   
+    }
+    void Parser::procExternLine(){
+        if((*cur).type==terminalEnum::EXTERN)
+        {
+            cur++;
+            procVarList();
+            if((*cur).type==terminalEnum::SEMICOLON)
+            {
+                return;
+            }
+        }
+        throw parser::ParserException("extern_line");
+    }
+    void Parser::procVarList()
+    {
+        if((*cur).type==terminalEnum::VARIABLE)
+        {
+            cur++;
+            procB();
+            return;
+        }
+        else
+        {
+            throw parser::ParserException("var_list");
+        }
+        
+    }
+    void Parser::procB(){
+        if((*cur).type==terminalEnum::COMMA)
+        {
+            cur++;
+            procVarList();
+        }
+        return;
     }
 } // namespace cnova::parser

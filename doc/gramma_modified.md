@@ -1,7 +1,6 @@
 # Gramma Modified Design Doc
 —— After eliminating the left common factor and left recursion
 ## gramma
-+ S' -> S
 + S -> sentence A
 + A -> S| `#`
 + sentence -> line | block

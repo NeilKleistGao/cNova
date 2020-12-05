@@ -1,6 +1,6 @@
-# Gramma Modified Design Doc
+# Grammar Modified Design Doc
 —— After eliminating the left common factor and left recursion
-## gramma
+## grammar
 + S -> sentence A
 + A -> S| `#`
 + sentence -> line | block
@@ -8,7 +8,7 @@
 + block -> if_block | while_block
 + extern_line -> `extern` var_list `;`
 + var_list -> `var` B
-+ B -> `,` varlist | `#`
++ B -> `,` var_list | `#`
 + calc_line -> expr `;` | left_type `=` calc_line
 + left_type ->  `var` C
 + C -> `[literal]` | `[var]` | `#`

@@ -1,10 +1,6 @@
 # First set
 
 
-- S':`extern`|`~`|`!`|`++`|`--`|`(`|`{`|`[`|`var`|`literal`|`nullptr`|`true`|
-
-  `false`|`return`|`auto`|`register`|`break`|`continue`|`if`|`while`
-
 - S: `extern`|`~`|`!`|`++`|`--`|`(`|`{`|`[`|`var`|`literal`|`nullptr`|`true`|
 
   `false`|`return`|`auto`|`register`|`break`|`continue`|`if`|`while`

@@ -23,7 +23,10 @@
 #ifndef CNOVA_PARSER_H
 #define CNOVA_PARSER_H
 #include <vector>
-#include "../lexical/lexical_definition.h"
+#include<set>
+#include<unordered_map>
+
+#include "../lexical/lexical_definition.h"  
 
 namespace cnova::parser
 {
@@ -38,8 +41,7 @@ namespace cnova::parser
         // //求所有符号的First集
         // void getTotFirst();
 
-        // //std::multimap<V_T, V_T, V_T_Hash> firstSet;
-
+        static std::unordered_map<std::string,std::set<lexical::TokenData::TokenType> > first_set; //first集
         //解析文法符号
         void procS();
         void procA();
@@ -74,6 +76,9 @@ namespace cnova::parser
         void procJ();
         void procBop();
         void procUop();
+        void procPlist();
+        void procL();
+        void procM();
 
     public:
         void parserStart(); //开始语法分析，即S'->S

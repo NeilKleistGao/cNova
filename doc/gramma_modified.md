@@ -29,13 +29,16 @@
 + H -> else_if_block| `#`
 + while_block -> `while(` expr `){` S `}`
 + type -> `int` | `float` | `bool` | `string`
-+ expr-> `(`J K| uop expr K | `{`dict_list`}` K | `[`arr_list`]` K | `var` K| `literal` K| `nullptr` K| `true` K| `false` K
++ expr-> `(`J K| uop expr K | `{`dict_list`}` K | `[`arr_list`]` K | `var` K| `literal` K| `nullptr` K| `true` K| `false` K | `fname(` L K
++ L -> `);` | plist `);`
 + K -> bop expr K |uop K | `#`
 + J->type`)`expr|expr`)` 
-+ bop -> `+`|`-`|`*`|`/`|`**`|`&`|`|`|`^`|`<<`|`>>`|`+`|`==`|`!=`|`<`|`>`|`<=`|`>=`|`&&`|`||`|`->`|`+=`|`-=`|`*=`|`/=`|`**=`|`&=`|`|=`|`^=`|`<<=`|`>>=`
++ bop -> `+`|`-`|`*`|`/`|`**`|`&`|`|`|`^`|`<<`|`>>`|`==`|`!=`|`<`|`>`|`<=`|`>=`|`&&`|`||`|`->`|`+=`|`-=`|`*=`|`/=`|`**=`|`&=`|`|=`|`^=`|`<<=`|`>>=`
 + uop -> `~`|`!`|`++`|`--`
-+ expr -> `fname();` | `fnanem(` plist `);`
-+ plist -> expr | expr `,` plist
+
++ plist -> expr M
++ M -> `,` plist | `#`
+
 ## tips
 + `var` means both variable and keyword `this`
 + `#` means null

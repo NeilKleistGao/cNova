@@ -34,9 +34,9 @@ namespace cnova::parser
                      terminalEnum::LEFT_PARENTHESES,
                      terminalEnum::LEFT_SQUARE_BRACKETS,
                      terminalEnum::VARIABLE,
-                     // terminalEnum::VAL_INTEGER,
-                     // terminalEnum::VAL_FLOAT,
-                     // terminalEnum::VAL_STRING,
+                     terminalEnum::VAL_STRING,
+                     terminalEnum::VAL_FLOAT,
+                     terminalEnum::VAL_INTEGER,
                      terminalEnum::NULLPTR,
                      terminalEnum::TRUE,
                      terminalEnum::FALSE,
@@ -51,9 +51,9 @@ namespace cnova::parser
                       terminalEnum::LEFT_PARENTHESES,
                       terminalEnum::LEFT_SQUARE_BRACKETS,
                       terminalEnum::VARIABLE,
-                      // terminalEnum::VAL_INTEGER,
-                      // terminalEnum::VAL_FLOAT,
-                      // terminalEnum::VAL_STRING,
+                      terminalEnum::VAL_STRING,
+                      terminalEnum::VAL_FLOAT,
+                      terminalEnum::VAL_INTEGER,
                       terminalEnum::NULLPTR,
                       terminalEnum::TRUE,
                       terminalEnum::FALSE,
@@ -71,9 +71,9 @@ namespace cnova::parser
                   terminalEnum::LEFT_PARENTHESES,
                   terminalEnum::LEFT_SQUARE_BRACKETS,
                   terminalEnum::VARIABLE,
-                  // terminalEnum::VAL_INTEGER,
-                  // terminalEnum::VAL_FLOAT,
-                  // terminalEnum::VAL_STRING,
+                  terminalEnum::VAL_STRING,
+                  terminalEnum::VAL_FLOAT,
+                  terminalEnum::VAL_INTEGER,
                   terminalEnum::NULLPTR,
                   terminalEnum::TRUE,
                   terminalEnum::FALSE,
@@ -121,34 +121,34 @@ namespace cnova::parser
         {"M", {terminalEnum::COMMA}},
         {"uop", {terminalEnum::BIT_NOT, terminalEnum::LOGICAL_NOT, terminalEnum::INCREMENT, terminalEnum::DECREASE}},
         {"bop", {terminalEnum::ADD, terminalEnum::SUB, terminalEnum::MULTIPLY, terminalEnum::DIV, terminalEnum::POWER, terminalEnum::BIT_AND, terminalEnum::BIT_OR, terminalEnum::BIT_XOR, terminalEnum::LEFT_SHIFT, terminalEnum::RIGHT_SHIFT, terminalEnum::EQUAL, terminalEnum::NOT_EQUAL, terminalEnum::LESS, terminalEnum::GREATER, terminalEnum::LESS_OR_EQUAL, terminalEnum::GREATER_OR_EQUAL, terminalEnum::LOGICAL_AND, terminalEnum::LOGICAL_OR, terminalEnum::PTR, terminalEnum::ADD_AND_ASSIGN, terminalEnum::SUB_AND_ASSIGN, terminalEnum::MULTIPLY_AND_ASSIGN, terminalEnum::DIV_AND_ASSIGN, terminalEnum::POWER_AND_ASSIGN, terminalEnum::AND_AND_ASSIGN, terminalEnum::OR_AND_ASSIGN, terminalEnum::XOR_AND_ASSIGN, terminalEnum::LEFT_SHIFT_AND_ASSIGN, terminalEnum::RIGHT_SHIFT_AND_ASSIGN}},
-        {"L", {terminalEnum::LEFT_BRACES, terminalEnum::LEFT_PARENTHESES, terminalEnum::LEFT_SQUARE_BRACKETS, terminalEnum::VARIABLE,
-               // terminalEnum::VAL_INTEGER,
-               // terminalEnum::VAL_FLOAT,
-               // terminalEnum::VAL_STRING,
-               terminalEnum::NULLPTR, terminalEnum::TRUE, terminalEnum::FALSE, terminalEnum::BIT_NOT, terminalEnum::LOGICAL_NOT, terminalEnum::INCREMENT, terminalEnum::DECREASE, terminalEnum::RIGHT_PARENTHESES}},
+        {"L", {terminalEnum::LEFT_BRACES, terminalEnum::LEFT_PARENTHESES, terminalEnum::LEFT_SQUARE_BRACKETS, terminalEnum::VARIABLE, terminalEnum::VAL_STRING, terminalEnum::VAL_FLOAT, terminalEnum::VAL_INTEGER, terminalEnum::NULLPTR, terminalEnum::TRUE, terminalEnum::FALSE, terminalEnum::BIT_NOT, terminalEnum::LOGICAL_NOT, terminalEnum::INCREMENT, terminalEnum::DECREASE, terminalEnum::RIGHT_PARENTHESES}},
         {"type", {terminalEnum::INT, terminalEnum::FLOAT, terminalEnum::BOOL, terminalEnum::STRING}},
         {"while_block", {terminalEnum::WHILE}},
         {"H", {terminalEnum::ELSE}},
         {"else_if_block", {terminalEnum::ELSE}},
 
         {"G", {terminalEnum::ELSE}},
-        {"E",{
-                terminalEnum::VARIABLE,
-                terminalEnum::VAL_STRING
-                  }},
+        {"E", {
+                  terminalEnum::VARIABLE,
+                  terminalEnum::VAL_STRING,
+                  terminalEnum::VAL_FLOAT,
+                  terminalEnum::VAL_INTEGER,
+              }},
 
-        {"return_line",{terminalEnum::RETURN}},
-        {"declaration_line",{terminalEnum::AUTO}},
-        {"F",{terminalEnum::VAL_STRING}},
-        {"register_line",{terminalEnum::REGISTER}},
-        {"break_line",{terminalEnum::BREAK}},
-        {"continue_line",{terminalEnum::CONTINUE}},
-        {"if_block",{terminalEnum::IF}},
-
-
+        {"return_line", {terminalEnum::RETURN}},
+        {"declaration_line", {terminalEnum::AUTO}},
+        {"F", {
+                  terminalEnum::VAL_STRING,
+                  terminalEnum::VAL_FLOAT,
+                  terminalEnum::VAL_INTEGER,
+              }},
+        {"register_line", {terminalEnum::REGISTER}},
+        {"break_line", {terminalEnum::BREAK}},
+        {"continue_line", {terminalEnum::CONTINUE}},
+        {"if_block", {terminalEnum::IF}},
 
     };
-//Writen by ZhanHao Liang
+    //Writen by ZhanHao Liang
     void Parser::parserStart()
     {
         cur = tokenStream.begin();
@@ -313,151 +313,333 @@ namespace cnova::parser
 
     //Writen by ShaoXuan Yun
 
-	void Parser::procLeftType() {
-		if((*cur).type==terminalEnum::VARIABLE){
-                cur++;
-                procC();
-        }else{
+    void Parser::procLeftType()
+    {
+        if ((*cur).type == terminalEnum::VARIABLE)
+        {
+            cur++;
+            procC();
+        }
+        else
+        {
             throw parser::ParserException("LeftType");
         }
-    	return;
+        return;
     }
-	
-    void Parser::procC(){
-        if((*cur).type==terminalEnum::LEFT_SQUARE_BRACKETS){
+
+    void Parser::procC()
+    {
+        if ((*cur).type == terminalEnum::LEFT_SQUARE_BRACKETS)
+        {
             cur++;
-            auto type=(*cur).type;
-            if(type==terminalEnum::VAL_FLOAT
-             || type==terminalEnum::VAL_INTEGER
-             || type==terminalEnum::VAL_STRING 
-            || type==terminalEnum::VARIABLE){
+            auto type = (*cur).type;
+            if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_STRING || type == terminalEnum::VARIABLE)
+            {
+                cur++;
+                if ((*cur).type == terminalEnum::RIGHT_SQUARE_BRACKETS)
                     cur++;
-                    if((*cur).type==terminalEnum::RIGHT_SQUARE_BRACKETS)
-                            cur++;
-                    else
-                            throw parser::ParserException("C");
-                            
-
-
-            }else{
+                else
+                    throw parser::ParserException("C");
+            }
+            else
+            {
 
                 throw parser::ParserException("C");
             }
         }
         return;
-    
     }
 
-	void Parser::procDictList(){
-    auto type=(*cur).type;
-        if(type==terminalEnum::LEFT_BRACES){
+    void Parser::procDictList()
+    {
+        auto type = (*cur).type;
+        if (type == terminalEnum::LEFT_BRACES)
+        {
             procDictType();
-        }else if(type==terminalEnum::COMMA){
+        }
+        else if (type == terminalEnum::COMMA)
+        {
             cur++;
             procDictType();
-        }else{
+        }
+        else
+        {
 
             throw parser::ParserException("DictList");
         }
     }
-	
-    void Parser::procDictType(){
-    
-        if((*cur).type==terminalEnum::LEFT_BRACES){//左大括号
+
+    void Parser::procDictType()
+    {
+
+        if ((*cur).type == terminalEnum::LEFT_BRACES)
+        { //左大括号
             cur++;
-            auto type=(*cur).type;
-            if(type==terminalEnum::VAL_FLOAT
-             || type==terminalEnum::VAL_INTEGER
-             || type==terminalEnum::VAL_STRING 
-            || type==terminalEnum::VARIABLE){
-                    cur++;
-                    if((*cur).type==terminalEnum::COMMA){
-                            cur++;
-                            procD();
-                    }
-                    else
-                           throw parser::ParserException("DictType");                      
-            }else
+            auto type = (*cur).type;
+            if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_STRING || type == terminalEnum::VARIABLE)
             {
-                           throw parser::ParserException("DictType");
-            }           
-        }else{
+                cur++;
+                if ((*cur).type == terminalEnum::COMMA)
+                {
+                    cur++;
+                    procD();
+                }
+                else
+                    throw parser::ParserException("DictType");
+            }
+            else
+            {
+                throw parser::ParserException("DictType");
+            }
+        }
+        else
+        {
 
             throw parser::ParserException("DictType");
         }
-
-
-
     }
 
-	void Parser::procD(){
-    auto type=(*cur).type;
-    if(type==terminalEnum::VAL_FLOAT 
-    || type==terminalEnum::VAL_INTEGER
-    || type==terminalEnum::VAL_INTEGER 
-    || type==terminalEnum::VARIABLE){
-        cur++;
-        if((*cur).type==terminalEnum::RIGHT_SQUARE_BRACKETS)
-            cur++;
-        else
-            throw parser::ParserException("D");
-
-    }else{
-
-
-        throw parser::ParserException("D");
-
-    }
-        
-
-    }
-	
-    void Parser::procArrList(){
-        auto type=(*cur).type;
-        if(type==terminalEnum::VAL_FLOAT 
-    || type==terminalEnum::VAL_INTEGER
-    || type==terminalEnum::VAL_INTEGER 
-    || type==terminalEnum::VARIABLE
-    ){
-        cur++;
-    }else if(type==terminalEnum::COMMA){
-        cur++;
-        procE();
-    }else
+    void Parser::procD()
     {
-        throw parser::ParserException("ArrList");
-    }
-    }
-	
-    void Parser::procE(){
-        auto type=(*cur).type;
-        if(type==terminalEnum::VAL_FLOAT 
-    || type==terminalEnum::VAL_INTEGER
-    || type==terminalEnum::VAL_INTEGER 
-    || type==terminalEnum::VARIABLE){
+        auto type = (*cur).type;
+        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VARIABLE)
+        {
             cur++;
-        }else
-            throw parser::ParserException("E");
-
-    }
-	
-    void Parser::procReturnLine(){
-        if((*cur).type==terminalEnum::RETURN){
-            cur++;
-            procVarList();
-            if((*cur).type==terminalEnum::SEMICOLON)
+            if ((*cur).type == terminalEnum::RIGHT_SQUARE_BRACKETS)
                 cur++;
             else
-            {
-                throw parser::ParserException("ReturnLine");
-            }
-        }else
+                throw parser::ParserException("D");
+        }
+        else
         {
-                throw parser::ParserException("ReturnLine");  
+
+            throw parser::ParserException("D");
         }
     }
 
+    void Parser::procArrList()
+    {
+        auto type = (*cur).type;
+        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VARIABLE)
+        {
+            cur++;
+        }
+        else if (type == terminalEnum::COMMA)
+        {
+            cur++;
+            procE();
+        }
+        else
+        {
+            throw parser::ParserException("ArrList");
+        }
+    }
 
+    // void Parser::procE(){
+    //     auto type=(*cur).type;
+    //     if(type==terminalEnum::VAL_FLOAT
+    // || type==terminalEnum::VAL_INTEGER
+    // || type==terminalEnum::VAL_INTEGER
+    // || type==terminalEnum::VARIABLE){
+    //         cur++;
+    //     }else
+    //         throw parser::ParserException("E");
+
+    // }
+
+    // void Parser::procReturnLine(){
+    //     if((*cur).type==terminalEnum::RETURN){
+    //         cur++;
+    //         procVarList();
+    //         if((*cur).type==terminalEnum::SEMICOLON)
+    //             cur++;
+    //         else
+    //         {
+    //             throw parser::ParserException("ReturnLine");
+    //         }
+    //     }else
+    //     {
+    //             throw parser::ParserException("ReturnLine");
+    //     }
+    // }
+
+    void Parser::procE()
+    {
+        auto type = (*cur).type;
+        if (type == terminalEnum::VARIABLE || type == terminalEnum::VAL_STRING)
+        {
+            cur++;
+            return;
+        }
+        else
+        {
+            throw parser::ParserException("missing E");
+        }
+    }
+    void Parser::procReturnLine()
+    {
+        if ((*cur).type == terminalEnum::RETURN)
+        {
+            cur++;
+            if (first_set["var_list"].count((*cur).type))
+            {
+                procVarList();
+                ++cur;
+                if ((*cur).type == terminalEnum::SEMICOLON)
+                {
+                    ++cur;
+                    return;
+                }
+            }
+            else
+            {
+                throw parser::ParserException("missing ReturnLine");
+            }
+        }
+        else
+        {
+            throw parser::ParserException("missing return");
+        }
+    }
+    void Parser::procDeclarationLine()
+    {
+        if ((*cur).type == terminalEnum::AUTO)
+        {
+            ++cur;
+            if ((*cur).type == terminalEnum::VARIABLE)
+            {
+                ++cur;
+                if ((*cur).type == terminalEnum::EQUAL)
+                {
+                    ++cur;
+                    if (first_set["F"].count((*cur).type))
+                    {
+                        procF();
+                        return;
+                    }
+                    else
+                        throw parser::ParserException("missing L");
+                }
+                else
+                    throw parser::ParserException("missing =");
+            }
+            else
+                throw parser::ParserException("missing variable");
+        }
+        else
+            throw parser::ParserException("missing auto");
+    }
+    void Parser::procF()
+    {
+        if ((*cur).type == terminalEnum::VAL_STRING)
+        {
+            ++cur;
+            return;
+        }
+        else
+            throw parser::ParserException("missing literal");
+    }
+    void Parser::procRegisterLine()
+    {
+        if ((*cur).type == terminalEnum::REGISTER)
+        {
+            ++cur;
+            if ((*cur).type == terminalEnum::VAL_STRING)
+            {
+                ++cur;
+                return;
+            }
+            else
+                throw parser::ParserException("missing literal");
+        }
+        else
+            throw parser::ParserException("missing register");
+    }
+    void Parser::procBreakLine()
+    {
+        if ((*cur).type == terminalEnum::BREAK)
+        {
+            ++cur;
+            if ((*cur).type == terminalEnum::SEMICOLON)
+            {
+                ++cur;
+                return;
+            }
+            else
+                throw parser::ParserException("misson ;");
+        }
+        else
+            throw parser::ParserException("missing break");
+    }
+    void Parser::procContinueLine()
+    {
+        if ((*cur).type == terminalEnum::CONTINUE)
+        {
+            ++cur;
+            if ((*cur).type == terminalEnum::SEMICOLON)
+            {
+                ++cur;
+                return;
+            }
+            else
+                throw parser::ParserException("misson ;");
+        }
+        else
+            throw parser::ParserException("missing continue");
+    }
+    void Parser::procIfBlock()
+    {
+        // proc if( expr ){ S } G
+        if ((*cur).type == terminalEnum::IF)
+        {
+            ++cur;
+            if ((*cur).type == terminalEnum::LEFT_PARENTHESES)
+            {
+                ++cur;
+                if (first_set["expr"].count((*cur).type))
+                {
+                    procExpr();
+                    if ((*cur).type == terminalEnum::RIGHT_PARENTHESES)
+                    {
+                        ++cur;
+                        if ((*cur).type == terminalEnum::LEFT_BRACES)
+                        {
+                            ++cur;
+                            if (first_set["S"].count((*cur).type))
+                            {
+                                procS();
+                                if ((*cur).type == terminalEnum::RIGHT_BRACES)
+                                {
+                                    cur++;
+                                    if (first_set["G"].count((*cur).type))
+                                    {
+                                        procG();
+                                        return;
+                                    }
+                                    else
+                                        throw parser::ParserException("missing G");
+                                }
+                                else
+                                    throw parser::ParserException("missing }");
+                            }
+                            else
+                                throw parser::ParserException("missing S");
+                        }
+                        else
+                            throw parser::ParserException("missing {");
+                    }
+                    else
+                        throw parser::ParserException("missing )");
+                }
+                else
+                    throw parser::ParserException("missing expr");
+            }
+            else
+                throw parser::ParserException("missing (");
+        }
+        else
+            throw parser::ParserException("missing if");
+    }
 
     //Writen by BaiTong Zhang
     void Parser::procType()
@@ -813,7 +995,6 @@ namespace cnova::parser
             return;
     }
 
-    //expr有缺
     void Parser::procExpr()
     {
         auto type = (*cur).type;
@@ -858,14 +1039,13 @@ namespace cnova::parser
             }
         }
 
-        //缺个literal
-        else if (type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE)
+        else if (type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE || type == terminalEnum::VAL_STRING || terminalEnum::VAL_FLOAT ||
+                     terminalEnum::VAL_INTEGER, )
         {
             ++cur;
             procK();
         }
 
-        //缺个fname
         else if (type == terminalEnum::VARIABLE)
         {
             //后看一位判断是var还是fname

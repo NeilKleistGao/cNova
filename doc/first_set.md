@@ -52,16 +52,16 @@
 
 - return_line : `return`
 
-- declaration_line: `auto var =`
+- declaration_line: `auto`
 
 - F: `literal;`
 
-- register_line: `register literal`
+- register_line: `register`
 
 - break_line: `break`
 
 - continue_line: `continue`
 
-- if_block:`if(`
+- if_block:`if`
 
 - plist : `(` | `{` | `[` | `var`| `literal` | `nullptr` | `true` | `false` | `~` | `!` | `++` |`--` | `fname`

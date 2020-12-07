@@ -130,7 +130,20 @@ namespace cnova::parser
         {"while_block", {terminalEnum::WHILE}},
         {"H", {terminalEnum::ELSE}},
         {"else_if_block", {terminalEnum::ELSE}},
-        {"G", {terminalEnum::ELSE}}
+        {"G", {terminalEnum::ELSE}},
+        {"E",{
+                terminalEnum::VARIABLE,
+                terminalEnum::VAL_STRING
+                  }},
+
+        {"return_line",{terminalEnum::RETURN}},
+        {"declaration_line",{terminalEnum::AUTO}},
+        {"F",{terminalEnum::VAL_STRING}},
+        {"register_line",terminalEnum::REGISTER},
+        {"break_line",terminalEnum::BREAK},
+        {"continue_line",terminalEnum::CONTINUE},
+        {"if_block",terminalEnum::IF},
+
 
     };
 
@@ -295,7 +308,108 @@ namespace cnova::parser
         }
         return;
     }
-
+    void Parser::procE(){
+        auto type = (*cur).type;
+        if (type == terminalEnum::VARIABLE || type == terminalEnum::VAL_STRING){
+            cur++;
+            return;
+        }else{
+            throw parser::ParserException("missing E");
+        }
+    }
+    void Parser::procReturnLine(){
+        if((*cur).type == terminalEnum::RETURN){
+            cur++;
+            if(first_set["var_list"].count((*cur).type)){
+                procVarList();
+                ++cur;
+                if((*cur).type == terminalEnum::SEMICOLON){
+                    ++cur;
+                    return;
+                }
+            }else{
+                throw parser::ParserException("missing ReturnLine");
+            }
+        }else {
+            throw parser::ParserException("missing return");
+        }
+    }
+    void Parser::procDeclarationLine(){
+        if((*cur).type == terminalEnum::AUTO){
+            ++cur;
+            if((*cur).type == terminalEnum::VARIABLE){
+                ++cur;
+                if((*cur).type == terminalEnum::EQUAL){
+                    ++cur;
+                    if(first_set["F"].count((*cur).type)){
+                        procF();
+                        return;
+                    }else throw parser::ParserException("missing L");
+                }else throw parser::ParserException("missing =");
+            }else throw parser::ParserException("missing variable");
+        }else throw parser::ParserException("missing auto");
+    }
+    void Parser::procF(){
+        if((*cur).type == terminalEnum::VAL_STRING){
+            ++cur;
+            return;
+        }else throw parser::ParserException("missing literal");
+    }
+    void Parser::procRegisterLine(){
+        if((*cur).type == terminalEnum::REGISTER){
+            ++cur;
+            if((*cur).type == terminalEnum::VAL_STRING){
+                ++cur;
+                return;
+            }else throw parser::ParserException("missing literal");
+        }else throw parser::ParserException("missing register");
+    }
+    void Parser::procBreakLine(){
+      if((*cur).type == terminalEnum::BREAK){
+          ++cur;
+          if((*cur).type == terminalEnum::SEMICOLON){
+              ++cur;
+              return;
+          }else throw parser::ParserException("misson ;");
+      }else throw parser::ParserException("missing break");
+    }
+    void Parser::procContinueLine(){
+        if((*cur).type == terminalEnum::CONTINUE){
+            ++cur;
+            if((*cur).type == terminalEnum::SEMICOLON){
+                ++cur;
+                return;
+            }else throw parser::ParserException("misson ;");
+        }else throw parser::ParserException("missing continue");
+    }
+    void Parser::procIfBlock(){
+        // proc if( expr ){ S } G
+        if((*cur).type == terminalEnum::IF){
+            ++cur;
+            if((*cur).type == terminalEnum::LEFT_PARENTHESES){
+                ++cur;
+                if(first_set["expr"].count((*cur).type)){
+                    procExpr();
+                    if((*cur).type == terminalEnum::RIGHT_PARENTHESES){
+                        ++cur;
+                        if((*cur).type == terminalEnum::LEFT_BRACES){
+                            ++cur;
+                            if(first_set["S"].count((*cur).type)){
+                                procS();
+                                if((*cur).type == terminalEnum::RIGHT_BRACES){
+                                    cur++;
+                                    if(first_set["G"].count((*cur).type)){
+                                        procG();
+                                        return ;
+                                    }else  throw parser::ParserException("missing G");
+                                }else throw parser::ParserException("missing }");
+                            }else throw parser::ParserException("missing S");
+                        }else throw parser::ParserException("missing {");
+                    }else throw parser::ParserException("missing )");
+                }else throw parser::ParserException("missing expr");
+            }else throw parser::ParserException("missing (");
+        }else throw parser::ParserException("missing if");
+    }
     void Parser::procType()
     {
         auto type = (*cur).type;

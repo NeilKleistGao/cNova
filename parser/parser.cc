@@ -1040,7 +1040,7 @@ namespace cnova::parser
         }
 
         else if (type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE || type == terminalEnum::VAL_STRING || terminalEnum::VAL_FLOAT ||
-                     terminalEnum::VAL_INTEGER, )
+                     terminalEnum::VAL_INTEGER )
         {
             ++cur;
             procK();

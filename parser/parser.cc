@@ -130,7 +130,22 @@ namespace cnova::parser
         {"while_block", {terminalEnum::WHILE}},
         {"H", {terminalEnum::ELSE}},
         {"else_if_block", {terminalEnum::ELSE}},
-        {"G", {terminalEnum::ELSE}}
+
+        {"G", {terminalEnum::ELSE}},
+        {"E",{
+                terminalEnum::VARIABLE,
+                terminalEnum::VAL_STRING
+                  }},
+
+        {"return_line",{terminalEnum::RETURN}},
+        {"declaration_line",{terminalEnum::AUTO}},
+        {"F",{terminalEnum::VAL_STRING}},
+        {"register_line",{terminalEnum::REGISTER}},
+        {"break_line",{terminalEnum::BREAK}},
+        {"continue_line",{terminalEnum::CONTINUE}},
+        {"if_block",{terminalEnum::IF}},
+
+
 
     };
 //Writen by ZhanHao Liang

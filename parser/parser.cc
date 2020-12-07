@@ -34,9 +34,7 @@ namespace cnova::parser
                      terminalEnum::LEFT_PARENTHESES,
                      terminalEnum::LEFT_SQUARE_BRACKETS,
                      terminalEnum::VARIABLE,
-                     // terminalEnum::VAL_INTEGER,
-                     // terminalEnum::VAL_FLOAT,
-                     // terminalEnum::VAL_STRING,
+                     terminalEnum::VAL_STRING,
                      terminalEnum::NULLPTR,
                      terminalEnum::TRUE,
                      terminalEnum::FALSE,
@@ -51,9 +49,7 @@ namespace cnova::parser
                       terminalEnum::LEFT_PARENTHESES,
                       terminalEnum::LEFT_SQUARE_BRACKETS,
                       terminalEnum::VARIABLE,
-                      // terminalEnum::VAL_INTEGER,
-                      // terminalEnum::VAL_FLOAT,
-                      // terminalEnum::VAL_STRING,
+                      terminalEnum::VAL_STRING,
                       terminalEnum::NULLPTR,
                       terminalEnum::TRUE,
                       terminalEnum::FALSE,
@@ -71,9 +67,7 @@ namespace cnova::parser
                   terminalEnum::LEFT_PARENTHESES,
                   terminalEnum::LEFT_SQUARE_BRACKETS,
                   terminalEnum::VARIABLE,
-                  // terminalEnum::VAL_INTEGER,
-                  // terminalEnum::VAL_FLOAT,
-                  // terminalEnum::VAL_STRING,
+                  terminalEnum::VAL_STRING,
                   terminalEnum::NULLPTR,
                   terminalEnum::TRUE,
                   terminalEnum::FALSE,
@@ -122,9 +116,7 @@ namespace cnova::parser
         {"uop", {terminalEnum::BIT_NOT, terminalEnum::LOGICAL_NOT, terminalEnum::INCREMENT, terminalEnum::DECREASE}},
         {"bop", {terminalEnum::ADD, terminalEnum::SUB, terminalEnum::MULTIPLY, terminalEnum::DIV, terminalEnum::POWER, terminalEnum::BIT_AND, terminalEnum::BIT_OR, terminalEnum::BIT_XOR, terminalEnum::LEFT_SHIFT, terminalEnum::RIGHT_SHIFT, terminalEnum::EQUAL, terminalEnum::NOT_EQUAL, terminalEnum::LESS, terminalEnum::GREATER, terminalEnum::LESS_OR_EQUAL, terminalEnum::GREATER_OR_EQUAL, terminalEnum::LOGICAL_AND, terminalEnum::LOGICAL_OR, terminalEnum::PTR, terminalEnum::ADD_AND_ASSIGN, terminalEnum::SUB_AND_ASSIGN, terminalEnum::MULTIPLY_AND_ASSIGN, terminalEnum::DIV_AND_ASSIGN, terminalEnum::POWER_AND_ASSIGN, terminalEnum::AND_AND_ASSIGN, terminalEnum::OR_AND_ASSIGN, terminalEnum::XOR_AND_ASSIGN, terminalEnum::LEFT_SHIFT_AND_ASSIGN, terminalEnum::RIGHT_SHIFT_AND_ASSIGN}},
         {"L", {terminalEnum::LEFT_BRACES, terminalEnum::LEFT_PARENTHESES, terminalEnum::LEFT_SQUARE_BRACKETS, terminalEnum::VARIABLE,
-               // terminalEnum::VAL_INTEGER,
-               // terminalEnum::VAL_FLOAT,
-               // terminalEnum::VAL_STRING,
+               terminalEnum::VAL_STRING,
                terminalEnum::NULLPTR, terminalEnum::TRUE, terminalEnum::FALSE, terminalEnum::BIT_NOT, terminalEnum::LOGICAL_NOT, terminalEnum::INCREMENT, terminalEnum::DECREASE, terminalEnum::RIGHT_PARENTHESES}},
         {"type", {terminalEnum::INT, terminalEnum::FLOAT, terminalEnum::BOOL, terminalEnum::STRING}},
         {"while_block", {terminalEnum::WHILE}},
@@ -763,7 +755,7 @@ namespace cnova::parser
             return;
     }
 
-    //expr有缺
+
     void Parser::procExpr()
     {
         auto type = (*cur).type;
@@ -808,14 +800,14 @@ namespace cnova::parser
             }
         }
 
-        //缺个literal
-        else if (type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE)
+   
+        else if (type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE||type==terminalEnum::VAL_STRING)
         {
             ++cur;
             procK();
         }
 
-        //缺个fname
+
         else if (type == terminalEnum::VARIABLE)
         {
             //后看一位判断是var还是fname

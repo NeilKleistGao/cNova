@@ -52,16 +52,18 @@
 
 - return_line : `return`
 
-- declaration_line: `auto`
+- declaration_line: `auto var =`
 
 - F: `literal;`
 
-- register_line: `register`
+- register_line: `register literal`
 
 - break_line: `break`
 
 - continue_line: `continue`
 
-- if_block:`if`
+- if_block:`if(`
 
 - plist : `(` | `{` | `[` | `var`| `literal` | `nullptr` | `true` | `false` | `~` | `!` | `++` |`--` | `fname`
+
+- dict_type :`{`

@@ -131,10 +131,10 @@ namespace cnova::parser
         {"return_line",{terminalEnum::RETURN}},
         {"declaration_line",{terminalEnum::AUTO}},
         {"F",{terminalEnum::VAL_STRING}},
-        {"register_line",terminalEnum::REGISTER},
-        {"break_line",terminalEnum::BREAK},
-        {"continue_line",terminalEnum::CONTINUE},
-        {"if_block",terminalEnum::IF},
+        {"register_line",{terminalEnum::REGISTER}},
+        {"break_line",{terminalEnum::BREAK}},
+        {"continue_line",{terminalEnum::CONTINUE}},
+        {"if_block",{terminalEnum::IF}},
 
 
     };

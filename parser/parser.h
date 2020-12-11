@@ -81,6 +81,7 @@ namespace cnova::parser
         void procM();
 
     public:
+        Parser(const std::vector<lexical::TokenData> &tokenStream);
         void parserStart(); //开始语法分析，即S'->S
     };
 } // namespace cnova::parser

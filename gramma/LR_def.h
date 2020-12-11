@@ -44,8 +44,6 @@
     using P_left = V_T;                            //产生式左部
     using P_right = std::vector<std::vector<V_T>>; //产生式右部(允许多个)
     using Character_set = std::set<def::V_T>;
-     //带有展望符的带点产生式. first为带点的产生式，second为展望符
-    using dot_P_forward = std::unordered_map<def::dot_P, std::set<V_T>,def::dot_P_Hash>;
     
    
     //带点的产生式
@@ -93,6 +91,8 @@
         V_T condition; //读入condition后跳转到to
     };
 
+      //带有展望符的带点产生式. first为带点的产生式，second为展望符
+      using dot_P_forward = std::unordered_map<def::dot_P, std::set<V_T>,def::dot_P_Hash>;
   
    
  } // namespace name

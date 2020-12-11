@@ -20,6 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+
+#include "parser_exceptions.h"
 namespace cnova::parser{
-    
+    void parser::ParserException::printstack() {
+        std::cout<<_info<<std::endl;
+    }
 }

@@ -22,8 +22,13 @@
 
 
 #include "parser_exceptions.h"
+#include <iostream>
 namespace cnova::parser{
+
     void parser::ParserException::printstack() {
         std::cout<<_info<<std::endl;
+    }
+    parser::ParserException::ParserException(std::string info){
+        _info=info;
     }
 }

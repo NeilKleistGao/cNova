@@ -19,20 +19,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
 #ifndef CNOVA_PARSER_EXCEPTIONS_H
-#include<iostream>
 #define CNOVA_PARSER_EXCEPTIONS_H
 #include <exception>
 #include <string>
+
 namespace cnova::parser
 {
     class ParserException : public std::exception {
 public:
     //应当在token序列记录行数才能报错
-    explicit ParserException(std::string _info):_info(_info){};
-//    const char* what() const noexcept override;
+    explicit ParserException(std::string);
+    const char* what() const noexcept override;
     void printstack();
-    virtual  ~ParserException(){};
+    ~ParserException(){}
 
 private:
     std::string _info;

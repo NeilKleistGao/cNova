@@ -27,9 +27,8 @@ namespace cnova::parser
 {
     //简化名命空间
     typedef lexical::TokenData::TokenType terminalEnum;
-    std::unordered_map<std::string, std::set<lexical::TokenData::TokenType>> Parser::first_set = {
-
-        {"expr", {
+    std::unordered_map<std::string, std::set<lexical::TokenData::TokenType> > Parser::first_set = {
+        {"expr", std::set<lexical::TokenData::TokenType>{
                      terminalEnum::LEFT_BRACES,
                      terminalEnum::LEFT_PARENTHESES,
                      terminalEnum::LEFT_SQUARE_BRACKETS,
@@ -135,14 +134,13 @@ namespace cnova::parser
                 terminalEnum::VARIABLE,
                 terminalEnum::VAL_STRING
                   }},
-
         {"return_line",{terminalEnum::RETURN}},
         {"declaration_line",{terminalEnum::AUTO}},
         {"F",{terminalEnum::VAL_STRING}},
-        {"register_line",terminalEnum::REGISTER},
-        {"break_line",terminalEnum::BREAK},
-        {"continue_line",terminalEnum::CONTINUE},
-        {"if_block",terminalEnum::IF},
+        {"register_line", {terminalEnum::REGISTER}},
+        {"break_line", {terminalEnum::BREAK}},
+        {"continue_line", {terminalEnum::CONTINUE}},
+        {"if_block", {terminalEnum::IF}},
 
 
     };
@@ -310,12 +308,23 @@ namespace cnova::parser
     }
     void Parser::procE(){
         auto type = (*cur).type;
-        if (type == terminalEnum::VARIABLE || type == terminalEnum::VAL_STRING){
+        if (type == terminalEnum::VARIABLE|| type == terminalEnum::VAL_STRING||
+        (*cur).type==terminalEnum::VAL_FLOAT||(*cur).type==terminalEnum::VAL_INTEGER){
             cur++;
             return;
         }else{
             throw parser::ParserException("missing E");
         }
+    }
+    void Parser::procDictList(){
+        if(first_set["dict_type"].count((*cur).type)){
+            procDictType();
+        }else if((*cur).type == terminalEnum::COMMA){
+            ++cur;
+            if(first_set["dict_type"].count((*cur).type)){
+                procDictType();
+            }else throw parser::ParserException("missing dict_type");
+        }else throw parser::ParserException("missing , or dict_type");
     }
     void Parser::procReturnLine(){
         if((*cur).type == terminalEnum::RETURN){
@@ -350,7 +359,9 @@ namespace cnova::parser
         }else throw parser::ParserException("missing auto");
     }
     void Parser::procF(){
-        if((*cur).type == terminalEnum::VAL_STRING){
+        if((*cur).type == terminalEnum::VAL_STRING
+           ||(*cur).type==terminalEnum::VAL_FLOAT
+           ||(*cur).type==terminalEnum::VAL_INTEGER){
             ++cur;
             return;
         }else throw parser::ParserException("missing literal");
@@ -358,7 +369,9 @@ namespace cnova::parser
     void Parser::procRegisterLine(){
         if((*cur).type == terminalEnum::REGISTER){
             ++cur;
-            if((*cur).type == terminalEnum::VAL_STRING){
+            if((*cur).type == terminalEnum::VAL_STRING
+            ||(*cur).type==terminalEnum::VAL_FLOAT
+            ||(*cur).type==terminalEnum::VAL_INTEGER){
                 ++cur;
                 return;
             }else throw parser::ParserException("missing literal");
@@ -988,4 +1001,5 @@ namespace cnova::parser
             return;
     }
 
+    Parser::Parser(const std::vector<lexical::TokenData> &tokenStream) : tokenStream(tokenStream) {}
 } // namespace cnova::parser

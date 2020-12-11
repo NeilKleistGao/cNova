@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <iostream>
 #include "../lexical/lexical_converter.h"
 #include "../parser/parser.h"
 #include "../parser/parser_exceptions.h"
@@ -107,6 +108,7 @@ int main(){
     try {
         parser->parserStart();
     } catch (cnova::parser::ParserException e) {
-        e.what();
+        //e.what();
+        e.printstack();
     }
 }

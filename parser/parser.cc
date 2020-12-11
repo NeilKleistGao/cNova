@@ -462,7 +462,24 @@ namespace cnova::parser
     //             throw parser::ParserException("ReturnLine");
     //     }
     // }
-
+    void Parser::procArrList(){
+        auto type= (*cur).type;
+        if(type==terminalEnum::VARIABLE){
+            cur++;
+            return;
+        }
+        else if(type==terminalEnum::VAL_STRING||type==terminalEnum::VAL_INTEGER||type==terminalEnum::VAL_FLOAT){
+            cur++;
+            return;
+        }
+        else if(type==terminalEnum::COMMA){
+            cur++;
+            procE();
+        }
+        else{
+            throw parser::ParserException("arr_list error");
+        }
+    }
     void Parser::procE()
     {
         auto type = (*cur).type;

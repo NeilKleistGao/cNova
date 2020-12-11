@@ -31,7 +31,7 @@ namespace cnova::parser
 public:
     //应当在token序列记录行数才能报错
     explicit ParserException(std::string);
-    const char* what() const noexcept override;
+    //const char* what() const noexcept override;
     void printstack();
     ~ParserException(){}
 

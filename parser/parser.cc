@@ -566,7 +566,7 @@ namespace cnova::parser
     void Parser::procD()
     {
         auto type = (*cur).type;
-        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VARIABLE)
+        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_STRING || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VARIABLE)
         {
             cur++;
             if ((*cur).type == terminalEnum::RIGHT_SQUARE_BRACKETS)
@@ -584,7 +584,7 @@ namespace cnova::parser
     void Parser::procArrList()
     {
         auto type = (*cur).type;
-        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VARIABLE)
+        if (type == terminalEnum::VAL_FLOAT || type == terminalEnum::VAL_INTEGER || type == terminalEnum::VAL_STRING || type == terminalEnum::VARIABLE)
         {
             cur++;
         }

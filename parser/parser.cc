@@ -288,7 +288,8 @@ namespace cnova::parser
         {"break_line", {terminalEnum::BREAK}},
         {"continue_line", {terminalEnum::CONTINUE}},
         {"if_block", {terminalEnum::IF}},
-        {"dict_type",{terminalEnum::LEFT_BRACES}}
+        {"dict_type",{terminalEnum::LEFT_BRACES}},
+        {"left_type",{terminalEnum::VARIABLE}}
 
 
     };
@@ -332,7 +333,7 @@ namespace cnova::parser
         }
         else
         {
-            throw parser::ParserException("sentence");
+            throw parser::ParserException("sentence error");
         }
         return;
     }

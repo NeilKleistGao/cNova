@@ -1,7 +1,31 @@
-int x = 10
-int y = 5
-float z = 20
-if(x == 10){
-return y;
+// a simple example for burning-attack in a game
+// it's easier for player to design their own skills or weapon
+
+// burning_skill.nova
+extern temp;
+
+auto dmg = 20;
+auto prob = 0.5;
+auto times = 1.2;
+
+if (temp > 30) {
+    prob = 0.75;
 }
-return z;
+
+auto r = rand();
+if (r <= prob) {
+    dmg *= times;
+    this->addStatus("burning");
+
+    auto i = 0;
+    while (i < this->equipments->size()) {
+        if (this->equipments->get(i)->flammable) {
+            this->equipments->get(i)->setFlame();
+        }
+    }
+}
+
+auto def = this->def;
+this->HP -= dmg - def;
+
+return this->HP > 0;

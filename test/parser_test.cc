@@ -95,7 +95,7 @@ void printValue(std::vector<TokenData>::iterator iterator)
     }
 }
 int main(){
-    std::string inputFileName = "test_data/parser/input.txt";
+    std::string inputFileName = "../test/test_data/parser/input.txt";
     auto lexicalConverter = new LexicalConverter(inputFileName);
     auto lexicalResult = lexicalConverter->parseTokens();
 /*    for (auto i = lexicalResult.begin(); i != lexicalResult.end(); ++i)

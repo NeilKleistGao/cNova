@@ -93,7 +93,7 @@ const std::unordered_map<std::string, TokenData::TokenType> LexicalConverter::NO
 };
 
 LexicalConverter::LexicalConverter(const std::string& filename) : _stream(nullptr) {
-    _stream = new io::InputStream(filename, BUFF_SIZE);
+    _stream = new io::InputStream(filename,BUFF_SIZE);
 }
 
 LexicalConverter::~LexicalConverter() {

@@ -1,31 +1,12 @@
-// MIT License
-//
-// Copyright (c) 2020 NeilKleistGao
-//
-//        Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-//        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//        copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-//        copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include "../lexical/lexical_converter.h"
+#include "../parser/parser.h"
+#include "../parser/parser_exceptions.h"
 
 using namespace cnova::lexical;
 using namespace cnova::io;
+using namespace cnova::parser;
 namespace TestType
 {
     std::string tokenTypeList[] = {"REGISTER",
@@ -94,53 +75,40 @@ namespace TestType
                                    "MOD",
                                    "MOD_AND_EQUAL"};
 }
-void printValue(std::vector<TokenData>::iterator iterator, std::ofstream &of)
+void printValue(std::vector<TokenData>::iterator iterator)
 {
     if (iterator->type == TokenData::TokenType::VAL_FLOAT)
     {
-        of <<std::setprecision(7)<< iterator->data.float_data;
+        std::cout <<std::setprecision(7)<< iterator->data.float_data;
     }
     else if (iterator->type == TokenData::TokenType::VAL_INTEGER)
     {
-        of << iterator->data.int_data;
+        std::cout << iterator->data.int_data;
     }
     else if (iterator->type == TokenData::TokenType::VAL_STRING)
     {
-        of << iterator->data.string_data;
+        std::cout << iterator->data.string_data;
     }
     else if (iterator->type == TokenData::TokenType::VARIABLE)
     {
-        of << iterator->data.string_data;
+        std::cout << iterator->data.string_data;
     }
 }
-
-int main()
-{
-    std::array<std::string, 5> files = {
-        "test_data/lexical/test_keyword.txt",
-        "test_data/lexical/test_number.txt",
-        "test_data/lexical/test_string.txt",
-        "test_data/lexical/test_symbol.txt",
-        "test_data/lexical/test_variables.txt"};
-
-    std::ofstream testOut;
-    testOut.open("test_data/outcome.txt");
-    for (const auto &file : files)
+int main(){
+    std::string inputFileName = "../test/test_data/parser/input.txt";
+    auto lexicalConverter = new LexicalConverter(inputFileName);
+    auto lexicalResult = lexicalConverter->parseTokens();
+/*    for (auto i = lexicalResult.begin(); i != lexicalResult.end(); ++i)
     {
-        testOut << file << std::endl;
-        auto converter = new LexicalConverter(file);
-        auto list = converter->parseTokens();
-        testOut << "Total lexeme number: " << list.size() << std::endl;
-        for (auto i = list.begin(); i != list.end(); ++i)
-        {
-            testOut << TestType::tokenTypeList[i->type] << " ";
-            printValue(i, testOut);
-            testOut << std::endl;
-        }
-        testOut << std::endl;
+        std::cout<<TestType::tokenTypeList[i->type] << " ";
+        printValue(i);
+        std::cout<<"\n";
+    }*/
+    auto parser = new  Parser(lexicalResult);
+    try {
+        parser->parserStart();
+    } catch (cnova::parser::ParserException e) {
+        //e.what();
+        e.printstack();
     }
-
-    testOut.close();
-
-    return 0;
 }

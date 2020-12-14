@@ -23,6 +23,7 @@
 + else_if_block -> `else if(` expr `){` S `}` | `else if(` expr `){` S `}` else_if_block
 + while_block -> `while(` expr `){` S `}`
 + type -> `int` | `float` | `bool` | `string`
-
++ plist -> expr | expr `,` plist
++ expr -> `fname();` | `fnanem(` plist `);`
 ## tips
 + `var` means both variable and keyword `this`

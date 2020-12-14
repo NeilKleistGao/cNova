@@ -23,6 +23,8 @@
 
 #include "cnova_vm.h"
 
+#include "../clib/libs.h"
+
 namespace cnova::vm {
 
 CNovaVM::CNovaVM() : _level(0) {
@@ -53,10 +55,12 @@ void CNovaVM::initThis(CNovaSelf* self) {
 
 void CNovaVM::modifySymbol(const std::string& name, const cnova::lexical::CNovaData& data) {
     if (_sym_table.find(name) == _sym_table.end()) {
+        _sym_table[name] = data;
         _layers.push(std::make_pair(_level, _sym_table.find(name)));
     }
-
-    _sym_table[name] = data;
+    else {
+        _sym_table[name] = data;
+    }
 }
 
 void CNovaVM::exitSubSpace() {
@@ -91,6 +95,50 @@ void CNovaVM::eraseData(nova_data& data) {
         delete d;
         data.data.pointer_data = nullptr;
     }
+}
+
+void CNovaVM::addInputToSymbolTable(const std::string& name) {
+    if (_input.empty()) {
+        // TODO:
+        return;
+    }
+
+    auto data = _input.front();
+    _input.erase(_input.begin());
+    modifySymbol(name, data);
+}
+
+void CNovaVM::registerSTLLib(const std::string& name) {
+    if (name == "string") {
+        for (const auto& item: clib::StringLib::STRING_LIB_LIST) {
+            nova_data data;
+            data.type = lexical::TokenData::FUNCTION;
+            data.data.pointer_data = item.second;
+            modifySymbol(item.first, data);
+        }
+    }
+
+    // TODO:
+}
+
+void CNovaVM::pushLoop(iterator next, iterator check) {
+    if ((_next.empty() && _check.empty()) ||
+        (_next.top() != next && _check.top() != check)) {
+        _next.push(next);
+        _check.push(check);
+    }
+}
+
+CNovaVM::iterator CNovaVM::popLoop() {
+    if (_next.empty() || _check.empty()) {
+        // TODO:
+    }
+
+    auto temp = _next.top();
+    _next.pop();
+    _check.pop();
+
+    return temp;
 }
 
 } // namespace cnova::vm

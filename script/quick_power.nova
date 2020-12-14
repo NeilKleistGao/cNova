@@ -1,0 +1,26 @@
+extern base, pow, mod;
+register "string";
+
+auto temp = 1;
+auto res = 1;
+// auto debug = this->debug;
+while (true) {
+    if (pow & 1) {
+        res = (res * temp) % mod;
+        // debug("mul");
+    }
+    else {
+        // debug("nop");
+    }
+
+    pow >>= 1;
+    temp = (temp * temp) % mod;
+
+    if (pow == 0) {
+        break;
+    }
+}
+
+res %= mod;
+
+return res, strlen((string)res);

@@ -84,7 +84,7 @@ bool InputStream::load() {
 char InputStream::moveNext() {
     if ((_forward - _current) < _SIZE) {
         _forward++;
-        if (getChar() && (_forward - _current) == _SIZE) {
+        if ((_forward - _current) == _SIZE - 1) {
             if (load()) {
                 return getChar();
             }

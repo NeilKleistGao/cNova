@@ -34,15 +34,11 @@
 namespace cnova::vm {
 
 class CNovaVM {
+private:
+    using iterator = std::vector<lexical::TokenData>::iterator;
 public:
     CNovaVM();
     ~CNovaVM();
-
-    using nova_int = cnova::lexical::nova_int;
-    using nova_float = cnova::lexical::nova_float;
-    using nova_string = cnova::lexical::nova_string;
-    using nova_pointer = cnova::lexical::nova_pointer;
-    using nova_data = cnova::lexical::CNovaData;
 
     CNovaVM(const CNovaVM&) = delete;
     CNovaVM& operator= (const CNovaVM&) = delete;
@@ -61,20 +57,122 @@ public:
 
     void exitSubSpace();
 
-    template<typename First, typename ...Args>
-    void initParam(First first, Args ...args) {
-
+    template<typename ...Args>
+    void initParam(nova_int first, Args ...args) {
+        auto data = nova_data{};
+        data.data.int_data = first;
+        data.type = lexical::TokenData::VAL_INTEGER;
+        _input.push_back(data);
+        initParam(args...);
     }
 
-    template<typename Last>
-    void initParam(Last p) {
-        if (_sym_table.find("this") == _sym_table.end()) {
+    template<typename ...Args>
+    void initParam(nova_float first, Args ...args) {
+        auto data = nova_data{};
+        data.data.float_data = first;
+        data.type = lexical::TokenData::VAL_FLOAT;
+        _input.push_back(data);
+        initParam(args...);
+    }
 
-        }
+    template<typename ...Args>
+    void initParam(nova_string first, Args ...args) {
+        auto data = nova_data{};
+        data.data.string_data = first;
+        data.type = lexical::TokenData::VAL_STRING;
+        _input.push_back(data);
+        initParam(args...);
+    }
+
+    template<typename ...Args>
+    void initParam(nova_array first, Args ...args) {
+        auto data = nova_data{};
+        data.data.pointer_data = first;
+        data.type = lexical::TokenData::ARRAY;
+        _input.push_back(data);
+        initParam(args...);
+    }
+
+    template<typename ...Args>
+    void initParam(nova_dictionary first, Args ...args) {
+        auto data = nova_data{};
+        data.data.pointer_data = first;
+        data.type = lexical::TokenData::DICTIONARY;
+        _input.push_back(data);
+        initParam(args...);
+    }
+
+    template<typename ...Args>
+    void initParam(nova_pointer first, Args ...args) {
+        auto data = nova_data{};
+        data.data.pointer_data = first;
+        data.type = lexical::TokenData::FUNCTION;
+        _input.push_back(data);
+        initParam(args...);
+    }
+
+    inline void initParam(nova_int i) {
+        auto data = nova_data{};
+        data.data.int_data = i;
+        data.type = lexical::TokenData::VAL_INTEGER;
+
+        _input.push_back(data);
+    }
+
+    inline void initParam(nova_float f) {
+        auto data = nova_data{};
+        data.data.float_data = f;
+        data.type = lexical::TokenData::VAL_FLOAT;
+
+        _input.push_back(data);
+    }
+
+    inline void initParam(nova_string s) {
+        auto data = nova_data{};
+        data.data.string_data = s;
+        data.type = lexical::TokenData::VAL_STRING;
+
+        _input.push_back(data);
+    }
+
+    inline void initParam(nova_array a) {
+        auto data = nova_data{};
+        data.data.pointer_data = a;
+        data.type = lexical::TokenData::ARRAY;
+
+        _input.push_back(data);
+    }
+
+    inline void initParam(nova_dictionary d) {
+        auto data = nova_data{};
+        data.data.pointer_data = d;
+        data.type = lexical::TokenData::DICTIONARY;
+
+        _input.push_back(data);
+    }
+
+    inline void initParam(nova_pointer p) {
+        auto data = nova_data{};
+        data.data.pointer_data = p;
+        data.type = lexical::TokenData::FUNCTION;
+
+        _input.push_back(data);
     }
 
     inline nova_data& getSymbolData(const std::string& name) {
         return _sym_table[name];
+    }
+
+    void addInputToSymbolTable(const std::string& name);
+
+    void registerSTLLib(const std::string& name);
+
+    void pushLoop(iterator next, iterator check);
+
+    iterator popLoop();
+
+    inline bool isInLoop(iterator entry) {
+        return (!_check.empty() && _check.top() == entry);
     }
 private:
     using symbol_table = std::map<std::string, nova_data>;
@@ -82,6 +180,7 @@ private:
     symbol_table _sym_table;
     std::vector<nova_data> _input;
     std::stack<layer> _layers;
+    std::stack<iterator> _next, _check;
     unsigned int _level;
 
     inline void eraseSymbol(symbol_table::iterator it) {

@@ -18,7 +18,7 @@
 + arr_list ->  `var` | `literal` |`, `E
 + E -> `var`|`literal`
 + return_line -> `return` var_list `;`
-+ declaration_line -> `auto var = ` F
++ declaration_line -> `auto var = ` expr
 + F -> `literal;`
 + register_line -> `register literal;`
 + break_line -> `break;`
@@ -29,7 +29,7 @@
 + H -> else_if_block| `#`
 + while_block -> `while(` expr `){` S `}`
 + type -> `int` | `float` | `bool` | `string`
-+ expr-> `(`J K| uop expr K | `{`dict_list`}` K | `[`arr_list`]` K | `var` K| `literal` K| `nullptr` K| `true` K| `false` K | `fname(` L K
++ expr-> `(`J K| uop expr K | `{`dict_list`}` K | `[`arr_list`]` K | `var` K| `literal` K| `nullptr` K| `true` K| `false` K | `fname(` L K |
 + L -> `);` | plist `);`
 + K -> bop expr K |uop K | `#`
 + J->type`)`expr|expr`)` 

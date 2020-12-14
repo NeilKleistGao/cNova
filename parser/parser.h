@@ -23,8 +23,9 @@
 #ifndef CNOVA_PARSER_H
 #define CNOVA_PARSER_H
 #include <vector>
-#include<set>
-#include<unordered_map>
+#include <set>
+#include <unordered_map>
+#include <functional>
 
 #include "../lexical/lexical_definition.h"
 #include "../vm/cnova_vm.h"
@@ -39,6 +40,8 @@ namespace cnova::parser
     private:
         std::vector<lexical::TokenData>& token_stream;  //输入字符序列流
         std::vector<lexical::TokenData>::iterator cur;  //字符序列流指针
+        std::vector<vm::nova_data> _results;
+        vm::CNovaVM* _vm;
 
         // //求所有符号的First集
         // void getTotFirst();
@@ -51,8 +54,8 @@ namespace cnova::parser
         void procLine();
         void procBlock();
         void procExternLine();
-        void procVarList();
-        void procB();
+        void procVarList(std::function<void(const std::string&)> op);
+        void procB(std::function<void(const std::string&)> op);
         void procCalLine();
         void procLeftType();
         void procC();
@@ -71,10 +74,10 @@ namespace cnova::parser
         void procG();
         void procElseIfBlock();
         void procH();
-        void procWhileBlock();
+        bool procWhileBlock();
         void procType();
-        void procExpr();
-        void procK();
+        lexical::CNovaData procExpr();
+        lexical::CNovaData procK(const lexical::CNovaData&);
         void procJ();
         void procBop();
         void procUop();
@@ -84,7 +87,7 @@ namespace cnova::parser
 
     public:
         explicit Parser(std::vector<lexical::TokenData> &token_stream);
-        cnova::lexical::CNovaData start(vm::CNovaVM*& vm); //开始语法分析，即S'->S
+        std::vector<vm::nova_data> start(vm::CNovaVM* vm); //开始语法分析，即S'->S
     };
 } // namespace cnova::parser
 

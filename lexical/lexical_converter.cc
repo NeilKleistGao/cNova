@@ -199,6 +199,7 @@ TokenData LexicalConverter::parseNumberLiteral(const int& line) {
         _stream->moveNext();
     }
 
+    _stream->moveBack();
     TokenData result{};
     if (int_flag) {
         result.type = TokenData::TokenType::VAL_INTEGER;

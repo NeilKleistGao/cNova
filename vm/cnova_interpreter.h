@@ -33,12 +33,6 @@ namespace cnova::vm {
 
 class CNovaInterpreter {
 public:
-    using nova_int = CNovaVM::nova_int;
-    using nova_float = CNovaVM::nova_float;
-    using nova_string = CNovaVM::nova_string;
-    using nova_pointer = CNovaVM::nova_pointer;
-    using nova_data = CNovaVM::nova_data;
-
     CNovaInterpreter() : CNovaInterpreter(nullptr, "") {
     }
     explicit CNovaInterpreter(CNovaSelf* parent) : CNovaInterpreter(parent, "") {
@@ -71,39 +65,43 @@ public:
         auto vm = new CNovaVM();
         vm->initParam(args...);
         vm->initThis(_parent);
-        _result = _parser->start(vm);
+        _results = _parser->start(vm);
 
         delete vm;
         vm = nullptr;
     }
 
     template<typename T>
-    inline T getResult() const {
-        return reinterpret_cast<T>(_result.data.pointer_data);
+    inline T getResult(const size_t& i) const {
+        return reinterpret_cast<T>(_results[i].data.pointer_data);
     }
 
-    inline nova_int getIntResult() const {
-        return _result.data.int_data;
+    inline nova_int getIntResult(const size_t& i) const {
+        return _results[i].data.int_data;
     }
 
-    inline nova_float getFloatResult() const {
-        return _result.data.float_data;
+    inline nova_float getFloatResult(const size_t& i) const {
+        return _results[i].data.float_data;
     }
 
-    inline nova_string getStringResult() const {
-        return _result.data.string_data;
+    inline nova_string getStringResult(const size_t& i) const {
+        return _results[i].data.string_data;
     }
 
-    inline bool getBoolResult() const {
-        return _result.data.int_data != 0;
+    inline bool getBoolResult(const size_t& i) const {
+        return _results[i].data.int_data != 0;
     }
 
-    inline std::vector<nova_data> getArrayResult() const {
-        return *reinterpret_cast<std::vector<nova_data>*>(_result.data.pointer_data);
+    inline std::vector<nova_data> getArrayResult(const size_t& i) const {
+        return *reinterpret_cast<std::vector<nova_data>*>(_results[i].data.pointer_data);
     }
 
-    inline std::map<std::string, nova_data> getDictionaryResult() const {
-        return *reinterpret_cast<std::map<std::string, nova_data>*>(_result.data.pointer_data);
+    inline std::map<std::string, nova_data> getDictionaryResult(const size_t& i) const {
+        return *reinterpret_cast<std::map<std::string, nova_data>*>(_results[i].data.pointer_data);
+    }
+
+    inline size_t getResultsCount() const {
+        return _results.size();
     }
 
 private:
@@ -111,7 +109,7 @@ private:
     std::vector<cnova::lexical::TokenData> _tokens;
     cnova::parser::Parser* _parser;
     CNovaSelf* _parent;
-    cnova::lexical::CNovaData _result;
+    std::vector<lexical::CNovaData> _results;
 };
 
 } // namespace cnova::vm

@@ -25,9 +25,19 @@
 #define CNOVA_CNOVA_SELF_H
 
 #include <map>
+#include "cnova_vm.h"
 #include "../lexical/lexical_definition.h"
 
+
 namespace cnova::vm {
+
+using nova_int = cnova::lexical::nova_int;
+using nova_float = cnova::lexical::nova_float;
+using nova_string = cnova::lexical::nova_string;
+using nova_pointer = cnova::lexical::nova_pointer;
+using nova_data = cnova::lexical::CNovaData;
+using nova_array = std::vector<nova_data>*;
+using nova_dictionary = std::map<std::string, nova_data>*;
 
 class CNovaSelf {
 public:
@@ -37,13 +47,36 @@ public:
 private:
     std::map<std::string, lexical::CNovaData>* _table;
 protected:
-    inline void registerItem(const std::string& name, lexical::nova_pointer* item) {
+    inline void registerItem(const std::string& name, nova_array item) {
         if (_table->find(name) != _table->end()) {
             // TODO:
         }
 
         lexical::CNovaData data;
-        data.pointer_data = item;
+        data.data.pointer_data = item;
+        data.type = lexical::TokenData::ARRAY;
+        (*_table)[name] = data;
+    }
+
+    inline void registerItem(const std::string& name, nova_dictionary item) {
+        if (_table->find(name) != _table->end()) {
+            // TODO:
+        }
+
+        lexical::CNovaData data;
+        data.data.pointer_data = item;
+        data.type = lexical::TokenData::DICTIONARY;
+        (*_table)[name] = data;
+    }
+
+    inline void registerItem(const std::string& name, nova_pointer item) {
+        if (_table->find(name) != _table->end()) {
+            // TODO:
+        }
+
+        lexical::CNovaData data;
+        data.data.pointer_data = item;
+        data.type = lexical::TokenData::FUNCTION;
         (*_table)[name] = data;
     }
 
@@ -53,7 +86,7 @@ protected:
         }
 
         lexical::CNovaData data;
-        data.int_data = item;
+        data.data.int_data = item;
         (*_table)[name] = data;
     }
 
@@ -63,7 +96,7 @@ protected:
         }
 
         lexical::CNovaData data;
-        data.float_data = item;
+        data.data.float_data = item;
         (*_table)[name] = data;
     }
 
@@ -73,7 +106,7 @@ protected:
         }
 
         lexical::CNovaData data;
-        data.string_data = item;
+        data.data.string_data = item;
         (*_table)[name] = data;
     }
 };

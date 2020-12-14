@@ -26,7 +26,9 @@
 #include<set>
 #include<unordered_map>
 
-#include "../lexical/lexical_definition.h"  
+#include "../lexical/lexical_definition.h"
+#include "../vm/cnova_vm.h"
+#include "../vm/cnova_self.h"
 
 namespace cnova::parser
 {
@@ -35,13 +37,13 @@ namespace cnova::parser
     class Parser
     {
     private:
-        std::vector<lexical::TokenData> tokenStream;  //输入字符序列流
+        std::vector<lexical::TokenData>& token_stream;  //输入字符序列流
         std::vector<lexical::TokenData>::iterator cur;  //字符序列流指针
 
         // //求所有符号的First集
         // void getTotFirst();
 
-        static std::unordered_map<std::string,std::set<lexical::TokenData::TokenType> > first_set; //first集
+        static std::unordered_map<std::string,std::set<lexical::TokenData::TokenType>> first_set; //first集
         //解析文法符号
         void procS();
         void procA();
@@ -81,8 +83,8 @@ namespace cnova::parser
         void procM();
 
     public:
-        Parser(const std::vector<lexical::TokenData> &tokenStream);
-        void parserStart(); //开始语法分析，即S'->S
+        explicit Parser(std::vector<lexical::TokenData> &token_stream);
+        cnova::lexical::CNovaData start(vm::CNovaVM*& vm); //开始语法分析，即S'->S
     };
 } // namespace cnova::parser
 

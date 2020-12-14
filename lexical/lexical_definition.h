@@ -109,7 +109,10 @@ struct TokenData {
         SEMICOLON,
         VARIABLE,
         MOD,
-        MOD_AND_EQUAL
+        MOD_AND_EQUAL,
+        FUNCTION,
+        ARRAY,
+        DICTIONARY
     } type;
     union {
         nova_int int_data;
@@ -118,6 +121,9 @@ struct TokenData {
         nova_pointer pointer_data;
     } data;
 };
+
+using CNovaData = TokenData;
+
 } // namespace cnova::lexical
 
 #endif // CNOVA_LEXICAL_DEFINITION_H

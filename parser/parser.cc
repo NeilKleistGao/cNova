@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2020 NeilKleistGao
+// Copyright (c) 2020 NeilKleistGao, ZhanHao Liang
 //
 //        Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 namespace cnova::parser
 {
     //简化名命空间
-    typedef lexical::TokenData::TokenType terminalEnum;
+    using terminalEnum = lexical::TokenData::TokenType;
     std::unordered_map<std::string, std::set<lexical::TokenData::TokenType> > Parser::first_set = {
         {"S",{
                 terminalEnum::EXTERN,
@@ -291,17 +291,17 @@ namespace cnova::parser
         {"dict_type",{terminalEnum::LEFT_BRACES}},
         {"left_type",{terminalEnum::VARIABLE}}
 
-
     };
-    //Writen by ZhanHao Liang
-    void Parser::parserStart()
+    cnova::lexical::CNovaData Parser::start(vm::CNovaVM*& vm)
     {
         try {
-            cur = tokenStream.begin();
+            cur = token_stream.begin();
             procS();
         } catch (ParserException e) {
             e.printstack();
         }
+
+        return cnova::lexical::CNovaData{}; // TODO:
     }
     void Parser::procS()
     {
@@ -1380,5 +1380,5 @@ namespace cnova::parser
             return;
     }
 
-    Parser::Parser(const std::vector<lexical::TokenData> &tokenStream) : tokenStream(tokenStream) {}
+    Parser::Parser(std::vector<lexical::TokenData> &token_stream) : token_stream(token_stream) {}
 } // namespace cnova::parser

@@ -11,7 +11,7 @@
 + calc_line -> expr `;` | left_type `=` calc_line
 + expr -> `(`type`)`expr | `(`expr`)` | expr `+` expr | expr `-` expr | expr `*` expr | expr `/` expr | expr `**` expr | expr `&` expr | expr `|` expr | expr `^` expr | expr `<<` expr | expr `>>` expr | expr `+` expr | expr `==` expr | expr `!=` expr | expr `<` expr | expr `>` expr | expr `<=` expr | expr `>=` expr | expr `&&` expr | expr `||` expr | expr `->` expr | expr `+=` expr | expr `-=` expr | expr `*=` expr | expr `/=` expr | expr `**=` expr | expr `&=` expr | expr `|=` expr | expr `^=` expr | expr `<<=` expr | expr `>>=` expr | `-` expr | `~` expr | `!` expr | expr `++` | expr `--` | `++` expr | `--` expr | `{`dict_list`}` | `[`arr_list`]` | `var` | `literal` | `nullptr` | `true` | `false`
 + left_type -> `var` | `var[literal]` | `var[var]`
-+ dict_list -> dict_type | `,` dict_type
++ dict_list -> dict_type | dict_type `,` dict_list
 + dict_type -> `{var, literal}` | `{var, var}` | `{literal, literal}` | `{literal, var}`
 + arr_list -> `var` | `literal` | `, var` | `, literal`
 + return_line -> `return` var_list `;`

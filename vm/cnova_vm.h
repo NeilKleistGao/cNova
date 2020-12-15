@@ -174,6 +174,10 @@ public:
     inline bool isInLoop(iterator entry) {
         return (!_check.empty() && _check.top() == entry);
     }
+
+    inline bool isInALoop() {
+        return !_check.empty();
+    }
 private:
     using symbol_table = std::map<std::string, nova_data>;
     using layer = std::pair<unsigned int, symbol_table::iterator>;

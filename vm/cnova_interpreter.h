@@ -44,7 +44,8 @@ public:
     CNovaInterpreter(CNovaSelf* parent, const std::string& filename)
         : _lex_converter{nullptr},
           _parser{new parser::Parser(_tokens)},
-          _parent(parent) {
+          _parent(parent),
+          _vm(nullptr) {
         if (!filename.empty()) {
             this->load(filename);
         }
@@ -62,13 +63,16 @@ public:
         if (_tokens.empty()) {
             return;
         }
-        auto vm = new CNovaVM();
-        vm->initParam(args...);
-        vm->initThis(_parent);
-        _results = _parser->start(vm);
 
-        delete vm;
-        vm = nullptr;
+        if (_vm != nullptr) {
+            delete _vm;
+            _vm = nullptr;
+        }
+
+        _vm = new CNovaVM();
+        _vm->initParam(args...);
+        _vm->initThis(_parent);
+        _results = _parser->start(_vm);
     }
 
     template<typename T>
@@ -110,6 +114,7 @@ private:
     cnova::parser::Parser* _parser;
     CNovaSelf* _parent;
     std::vector<lexical::CNovaData> _results;
+    CNovaVM* _vm;
 };
 
 } // namespace cnova::vm

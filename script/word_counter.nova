@@ -1,0 +1,32 @@
+extern sentence;
+register "string";
+register "dictionary";
+
+auto res = {};
+while (true) {
+    auto pos = strstr(sentence, " ");
+    if (pos > 0) {
+        auto word = substring(sentence, 0, pos);
+
+        if (find(res, word)) {
+            res[word]++;
+        }
+        else {
+            res[word] = 1;
+        }
+
+        sentence = substring(sentence, pos + 1, strlen(sentence));
+    }
+    else {
+        if (find(sentence)) {
+            res[sentence]++;
+        }
+        else {
+            res[sentence] = 1;
+        }
+
+        break;
+    }
+}
+
+return res;

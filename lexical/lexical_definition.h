@@ -112,7 +112,8 @@ struct TokenData {
         MOD_AND_EQUAL,
         FUNCTION,
         ARRAY,
-        DICTIONARY
+        DICTIONARY,
+        REFERENCE
     } type;
     union {
         nova_int int_data;

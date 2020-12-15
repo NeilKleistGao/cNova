@@ -117,8 +117,22 @@ void CNovaVM::registerSTLLib(const std::string& name) {
             modifySymbol(item.first, data);
         }
     }
-
-    // TODO:
+    else if (name == "dictionary") {
+        for (const auto& item: clib::DictionaryLib::DICTIONARY_LIB_LIST) {
+            nova_data data;
+            data.type = lexical::TokenData::FUNCTION;
+            data.data.pointer_data = item.second;
+            modifySymbol(item.first, data);
+        }
+    }
+    else if (name == "math") {
+        for (const auto& item: clib::MathLib::MATH_LIB_LIST) {
+            nova_data data;
+            data.type = lexical::TokenData::FUNCTION;
+            data.data.pointer_data = item.second;
+            modifySymbol(item.first, data);
+        }
+    }
 }
 
 void CNovaVM::pushLoop(iterator next, iterator check) {

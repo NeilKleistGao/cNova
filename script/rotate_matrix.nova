@@ -1,0 +1,10 @@
+extern theta;
+register "math";
+
+auto arr = [0.0, 0.0, 0.0, 0.0];
+arr[0] = cos(theta);
+arr[1] = -sin(theta);
+arr[2] = sin(theta);
+arr[3] = cos(theta);
+
+return arr;

@@ -19,37 +19,24 @@
  * SOFTWARE.
  */
 
-/// @file cnova_interpreter.h
+/// @file dictionary_lib.cc
 
-#include "cnova_interpreter.h"
+#include "libs.h"
 
-namespace cnova::vm {
+#include <functional>
+#include <map>
 
-CNovaInterpreter::~CNovaInterpreter() {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-    }
+#include "../lexical/lexical_definition.h"
+#include "../vm/cnova_vm.h"
 
-    delete _parser;
-    _parser = nullptr;
-
-    if (_vm != nullptr) {
-        delete _vm;
-        _vm = nullptr;
-    }
+namespace cnova::clib {
+    const std::unordered_map<std::string, void*> DictionaryLib::DICTIONARY_LIB_LIST = {
+            {"find", reinterpret_cast<void*>(new std::function<lexical::CNovaData(const lexical::CNovaData&, const lexical::CNovaData&)>{
+                +[](const lexical::CNovaData& dic, const lexical::CNovaData& key) -> lexical::CNovaData {
+                    lexical::CNovaData data{};
+                    auto map = *reinterpret_cast<cnova::vm::nova_dictionary>(dic.data.pointer_data);
+                    data.type = (map.find(key.data.string_data) == map.end()) ? vm::nova_data::FALSE : vm::nova_data::TRUE;
+                    return data;
+            }})},
+    };
 }
-
-void CNovaInterpreter::load(const std::string& filename) {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-        _tokens.clear();
-    }
-
-    _lex_converter = new lexical::LexicalConverter{filename};
-    _tokens = _lex_converter->parseTokens();
-}
-
-
-} // namespace cnova::vm

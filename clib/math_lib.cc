@@ -19,37 +19,32 @@
  * SOFTWARE.
  */
 
-/// @file cnova_interpreter.h
+/// @file math_lib.cc
 
-#include "cnova_interpreter.h"
+#include "libs.h"
 
-namespace cnova::vm {
+#include <cmath>
+#include <functional>
 
-CNovaInterpreter::~CNovaInterpreter() {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-    }
+#include "../lexical/lexical_definition.h"
+#include "../vm/cnova_vm.h"
 
-    delete _parser;
-    _parser = nullptr;
+namespace cnova::clib {
+const std::unordered_map<std::string, void*> MathLib::MATH_LIB_LIST = {
+        {"cos", reinterpret_cast<void*>(new std::function<lexical::CNovaData(const lexical::CNovaData&)>{
+            +[](const lexical::CNovaData& theta) -> lexical::CNovaData {
+                lexical::CNovaData data{};
+                data.type = vm::nova_data::VAL_FLOAT;
+                data.data.float_data = std::cos(theta.data.float_data);
+                return data;
+        }})},
+        {"sin", reinterpret_cast<void*>(new std::function<lexical::CNovaData(const lexical::CNovaData&)>{
+            +[](const lexical::CNovaData& theta) -> lexical::CNovaData {
+                lexical::CNovaData data{};
+                data.type = vm::nova_data::VAL_FLOAT;
+                data.data.float_data = std::sin(theta.data.float_data);
+                return data;
+        }})},
+};
 
-    if (_vm != nullptr) {
-        delete _vm;
-        _vm = nullptr;
-    }
-}
-
-void CNovaInterpreter::load(const std::string& filename) {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-        _tokens.clear();
-    }
-
-    _lex_converter = new lexical::LexicalConverter{filename};
-    _tokens = _lex_converter->parseTokens();
-}
-
-
-} // namespace cnova::vm
+} // namespace cnova::clib

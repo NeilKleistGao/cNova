@@ -33,6 +33,16 @@ public:
     const static std::unordered_map<std::string, void*> STRING_LIB_LIST;
 };
 
+class DictionaryLib {
+public:
+    const static std::unordered_map<std::string, void*> DICTIONARY_LIB_LIST;
+};
+
+class MathLib {
+public:
+    const static std::unordered_map<std::string, void*> MATH_LIB_LIST;
+};
+
 }
 
 #endif //CNOVA_LIBS_H

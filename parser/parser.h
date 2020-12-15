@@ -30,6 +30,7 @@
 #include "../lexical/lexical_definition.h"
 #include "../vm/cnova_vm.h"
 #include "../vm/cnova_self.h"
+#include "operators.h"
 
 namespace cnova::parser
 {
@@ -38,31 +39,38 @@ namespace cnova::parser
     class Parser
     {
     private:
-        std::vector<lexical::TokenData>& token_stream;  //输入字符序列流
-        std::vector<lexical::TokenData>::iterator cur;  //字符序列流指针
+        std::vector<vm::nova_data>& token_stream;  //输入字符序列流
+        std::vector<vm::nova_data>::iterator cur;  //字符序列流指针
         std::vector<vm::nova_data> _results;
+        std::vector<vm::nova_data> _param_list;
+        std::stack<unsigned int> _param_pos;
+        std::stack<unsigned short> _priority;
         vm::CNovaVM* _vm;
+        bool _breaking;
+
+        using bop_func = Operators::bop_func;
+        using uop_func = Operators::uop_func;
 
         // //求所有符号的First集
         // void getTotFirst();
 
-        static std::unordered_map<std::string,std::set<lexical::TokenData::TokenType>> first_set; //first集
+        static std::unordered_map<std::string,std::set<vm::nova_data::TokenType>> first_set; //first集
+        static std::unordered_map<vm::nova_data::TokenType, unsigned short> PRIORITY_TABLE;
         //解析文法符号
-        void procS();
-        void procA();
+        void procStart();
+        void procAhead();
         void procSentence();
         void procLine();
         void procBlock();
         void procExternLine();
-        void procVarList(std::function<void(const std::string&)> op);
-        void procB(std::function<void(const std::string&)> op);
-        void procCalLine();
-        void procLeftType();
+        void procVarList(std::function<void(const std::string&)> op, const bool& ext = true);
+//        void procVarListRest(std::function<void(const std::string&)> op, const bool& ext);
+        vm::nova_data procRef(const vm::nova_data& parent);
         void procC();
         void procDictList();
-        void procDictType();
+//        void procDictType();
         void procD();
-        void procArrList();
+        void procArrList(vm::nova_array arr);
         void procE();
         void procReturnLine();
         void procDeclarationLine();
@@ -71,22 +79,25 @@ namespace cnova::parser
         void procBreakLine();
         void procContinueLine();
         void procIfBlock();
-        void procG();
-        void procElseIfBlock();
-        void procH();
+        void procElseOrElseIf(const bool& skip = false);
+        void procElseIfBlock(const bool& skip = false);
+        void procElseIfCheck(const bool& skip);
         bool procWhileBlock();
-        void procType();
-        lexical::CNovaData procExpr();
-        lexical::CNovaData procK(const lexical::CNovaData&);
-        void procJ();
-        void procBop();
-        void procUop();
+        vm::nova_data procType();
+        vm::nova_data procExpr();
+        vm::nova_data procExprRest(const vm::nova_data&);
+        vm::nova_data procParentheses();
+        bop_func procBop();
+        uop_func procUop(const bool& sure_front);
         void procPlist();
-        void procL();
-        void procM();
+//        void procL();
+//        void procM();
+
+        void parseUntilBlockEnd();
+        vm::nova_data transform(const vm::nova_data&, const vm::nova_data&);
 
     public:
-        explicit Parser(std::vector<lexical::TokenData> &token_stream);
+        explicit Parser(std::vector<vm::nova_data> &token_stream);
         std::vector<vm::nova_data> start(vm::CNovaVM* vm); //开始语法分析，即S'->S
     };
 } // namespace cnova::parser

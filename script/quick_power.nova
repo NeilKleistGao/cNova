@@ -1,7 +1,7 @@
 extern base, pow, mod;
 register "string";
 
-auto temp = 1;
+auto temp = base;
 auto res = 1;
 // auto debug = this->debug;
 while (true) {
@@ -23,4 +23,4 @@ while (true) {
 
 res %= mod;
 
-return res, strlen((string)res);
+return res, strlen((string)(res));

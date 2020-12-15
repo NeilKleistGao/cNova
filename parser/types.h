@@ -19,37 +19,20 @@
  * SOFTWARE.
  */
 
-/// @file cnova_interpreter.h
+/// @file types.h
 
-#include "cnova_interpreter.h"
+#ifndef CNOVA_TYPES_H
+#define CNOVA_TYPES_H
 
-namespace cnova::vm {
+#include "../vm/cnova_vm.h"
 
-CNovaInterpreter::~CNovaInterpreter() {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-    }
+namespace cnova::parser {
 
-    delete _parser;
-    _parser = nullptr;
+class Types {
+public:
+    static vm::nova_string transformIntToString(const vm::nova_int&);
+};
 
-    if (_vm != nullptr) {
-        delete _vm;
-        _vm = nullptr;
-    }
 }
 
-void CNovaInterpreter::load(const std::string& filename) {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-        _tokens.clear();
-    }
-
-    _lex_converter = new lexical::LexicalConverter{filename};
-    _tokens = _lex_converter->parseTokens();
-}
-
-
-} // namespace cnova::vm
+#endif //CNOVA_TYPES_H

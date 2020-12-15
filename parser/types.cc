@@ -19,37 +19,21 @@
  * SOFTWARE.
  */
 
-/// @file cnova_interpreter.h
+/// @file types.cc
 
-#include "cnova_interpreter.h"
+#include "types.h"
 
-namespace cnova::vm {
+#include <string>
 
-CNovaInterpreter::~CNovaInterpreter() {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
+namespace cnova::parser {
+vm::nova_string Types::transformIntToString(const vm::nova_int& num) {
+    std::string s = std::to_string(num);
+    char* final = new char[s.length() + 1];
+    for (int i = 0; i < s.length(); i++) {
+        final[i] = s[i];
     }
 
-    delete _parser;
-    _parser = nullptr;
-
-    if (_vm != nullptr) {
-        delete _vm;
-        _vm = nullptr;
-    }
+    final[s.length()] = 0;
+    return final;
 }
-
-void CNovaInterpreter::load(const std::string& filename) {
-    if (_lex_converter != nullptr) {
-        delete _lex_converter;
-        _lex_converter = nullptr;
-        _tokens.clear();
-    }
-
-    _lex_converter = new lexical::LexicalConverter{filename};
-    _tokens = _lex_converter->parseTokens();
 }
-
-
-} // namespace cnova::vm

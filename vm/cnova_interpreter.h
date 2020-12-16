@@ -75,6 +75,21 @@ public:
         _results = _parser->start(_vm);
     }
 
+    void execute() {
+        if (_tokens.empty()) {
+            return;
+        }
+
+        if (_vm != nullptr) {
+            delete _vm;
+            _vm = nullptr;
+        }
+
+        _vm = new CNovaVM();
+        _vm->initThis(_parent);
+        _results = _parser->start(_vm);
+    }
+
     template<typename T>
     inline T getResult(const size_t& i) const {
         return reinterpret_cast<T>(_results[i].data.pointer_data);

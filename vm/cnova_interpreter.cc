@@ -49,6 +49,7 @@ void CNovaInterpreter::load(const std::string& filename) {
 
     _lex_converter = new lexical::LexicalConverter{filename};
     _tokens = _lex_converter->parseTokens();
+    return;
 }
 
 

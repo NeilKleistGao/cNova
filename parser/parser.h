@@ -84,7 +84,7 @@ namespace cnova::parser
         void procElseIfCheck(const bool& skip);
         bool procWhileBlock();
         vm::nova_data procType();
-        vm::nova_data procExpr();
+        vm::nova_data procExpr(const bool& first = false);
         vm::nova_data procExprRest(const vm::nova_data&);
         vm::nova_data procParentheses();
         bop_func procBop();

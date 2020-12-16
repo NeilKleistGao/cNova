@@ -55,7 +55,11 @@ vm::nova_data Operators::multiply(const vm::nova_data& d1, const vm::nova_data& 
 
 vm::nova_data Operators::div(const vm::nova_data& d1, const vm::nova_data& d2) {
     vm::nova_data res{};
-    // TODO:
+    if (d1.type == lexical::TokenData::VAL_INTEGER && d2.type == lexical::TokenData::VAL_INTEGER) {
+        res.type = lexical::TokenData::VAL_INTEGER;
+        res.data.int_data = d1.data.int_data / d2.data.int_data;
+    }
+
     return res;
 }
 

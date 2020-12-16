@@ -383,7 +383,7 @@ namespace cnova::parser
 
         //否则      pass
 
-        if (_breaking) {
+        if (_breaking || cur == token_stream.end()) {
             return;
         }
 
@@ -426,7 +426,7 @@ namespace cnova::parser
                  type == terminalEnum::VARIABLE || type == terminalEnum::VAL_STRING ||
                  type == terminalEnum::NULLPTR || type == terminalEnum::TRUE || type == terminalEnum::FALSE)
         {
-            procExpr();
+            procExpr(true);
         }
         else if (type == terminalEnum::RETURN)
         {
@@ -748,7 +748,7 @@ namespace cnova::parser
                     ++cur;
                     if (first_set["expr"].count(cur->type))
                     {
-                        auto data = procExpr();
+                        auto data = procExpr(true);
                         if (data.type == vm::nova_data::VARIABLE) {
                             auto temp = _vm->getSymbolData(data.data.string_data);
                             _vm->modifySymbol(var_name, temp);
@@ -781,25 +781,25 @@ namespace cnova::parser
             ++cur;
             return;
         }
-        else
+        else {
             throw parser::ParserException("missing literal");
+        }
     }
-    void Parser::procRegisterLine()
-    {
-        if (cur->type == terminalEnum::REGISTER)
-        {
+    void Parser::procRegisterLine() {
+        if (cur->type == terminalEnum::REGISTER) {
             ++cur;
-            if (cur->type == terminalEnum::VAL_STRING)
-            {
+            if (cur->type == terminalEnum::VAL_STRING) {
                 _vm->registerSTLLib(cur->data.string_data);
                 ++cur;
                 return;
             }
-            else
+            else {
                 throw parser::ParserException("missing literal");
+            }
         }
-        else
+        else {
             throw parser::ParserException("missing register");
+        }
     }
     void Parser::procBreakLine() {
         if (cur->type == terminalEnum::BREAK) {
@@ -847,7 +847,7 @@ namespace cnova::parser
             if (cur->type == terminalEnum::LEFT_PARENTHESES) {
                 ++cur;
                 if (first_set["expr"].count(cur->type)) {
-                    auto data = procExpr();
+                    auto data = procExpr(true);
                     if (cur->type == terminalEnum::RIGHT_PARENTHESES) {
                         ++cur;
                         if (Operators::isExpressionFalse(data)) {
@@ -939,11 +939,11 @@ namespace cnova::parser
         else if (type == terminalEnum::SUB || type == terminalEnum::SUB_AND_ASSIGN) {
             func = Operators::sub;
         }
-        else if (type == terminalEnum::MULTIPLY) {
+        else if (type == terminalEnum::MULTIPLY || type == terminalEnum::MULTIPLY_AND_ASSIGN) {
             func = Operators::multiply;
         }
-        else if (type == terminalEnum::DIV) {
-            // TODO:
+        else if (type == terminalEnum::DIV || type == terminalEnum::DIV_AND_ASSIGN) {
+            func = Operators::div;
         }
         else if (type == terminalEnum::POWER) {
             // TODO:
@@ -988,9 +988,6 @@ namespace cnova::parser
             // TODO:
         }
         else if (type == terminalEnum::PTR) {
-            // TODO:
-        }
-        else if (type == terminalEnum::MULTIPLY_AND_ASSIGN) {
             // TODO:
         }
         else if (type == terminalEnum::DIV_AND_ASSIGN) {
@@ -1061,7 +1058,7 @@ namespace cnova::parser
             auto type = procType();
             if (cur->type == terminalEnum::LEFT_PARENTHESES) {
                 ++cur;
-                auto res = procExpr();
+                auto res = procExpr(true);
                 if (cur->type != terminalEnum::RIGHT_PARENTHESES) {
                     // TODO:
                 }
@@ -1074,7 +1071,7 @@ namespace cnova::parser
             }
         }
         else if (first_set["expr"].count(type)) {
-            auto res = procExpr();
+            auto res = procExpr(true);
             if (cur->type == terminalEnum::RIGHT_PARENTHESES) {
                 ++cur;
                 return res;
@@ -1216,7 +1213,7 @@ namespace cnova::parser
                 break;
             }
             else if (first_set["expr"].count(type)) {
-                auto data = procExpr();
+                auto data = procExpr(true);
                 if (data.type == lexical::TokenData::VARIABLE) {
                     data = _vm->getSymbolData(data.data.string_data);
                 }
@@ -1243,19 +1240,29 @@ namespace cnova::parser
 //            return;
 //    }
 
-    vm::nova_data Parser::procExpr()
+    vm::nova_data Parser::procExpr(const bool& first)
     {
         auto type = cur->type;
         if (type == terminalEnum::LEFT_PARENTHESES) {
             ++cur;
             auto temp = procParentheses();
-            return procExprRest(temp);
+            if (first) {
+                return procExprRest(temp);
+            }
+            else {
+                return temp;
+            }
         }
         else if (first_set["uop"].count(type) || type == lexical::TokenData::SUB) {
             auto func = procUop(true);
             auto temp = procExpr();
             _priority.pop();
-            return procExprRest(func(temp, true));
+            if (first) {
+                return procExprRest(func(temp, true));
+            }
+            else {
+                return func(temp, true);
+            }
         }
         else if (type == terminalEnum::LEFT_BRACES) {
             ++cur;
@@ -1286,7 +1293,7 @@ namespace cnova::parser
             procArrList(vec);
             if (cur->type == terminalEnum::RIGHT_SQUARE_BRACKETS) {
                 ++cur;
-                return procExprRest(data);
+                return data;
             }
             else {
                 throw parser::ParserException("missing ]");
@@ -1303,7 +1310,13 @@ namespace cnova::parser
             data.type = type;
             data.data = cur->data;
             ++cur;
-            return procExprRest(data);
+            if (first) {
+                return procExprRest(data);
+            }
+            else {
+                return data;
+            }
+
         }
         else if (type == terminalEnum::VARIABLE)
         {
@@ -1352,18 +1365,33 @@ namespace cnova::parser
                     ++cur;
                 }
 
-                return procExprRest(res);
+                if (first) {
+                    return procExprRest(res);
+                }
+                else {
+                    return res;
+                }
             }
             else if (cur->type == terminalEnum::LEFT_SQUARE_BRACKETS) {
-                return procExprRest(procRef(data));
+                if (first) {
+                    return procExprRest(procRef(data));
+                }
+                else {
+                    return procRef(data);
+                }
+
             }
             //否则认为是var
             else {
-                return procExprRest(data);
+                if (first) {
+                    return procExprRest(data);
+                }
+                else {
+                    return data;
+                }
             }
         }
-        else
-        {
+        else {
             throw parser::ParserException("expression error");
         }
     }
@@ -1444,7 +1472,7 @@ namespace cnova::parser
             if (cur->type == terminalEnum::IF) {
                 ++cur;
                 if (cur->type == terminalEnum::LEFT_PARENTHESES) {
-                    auto data = procExpr();
+                    auto data = procExpr(true);
 
                     if (cur->type == terminalEnum::RIGHT_PARENTHESES) {
                         ++cur;

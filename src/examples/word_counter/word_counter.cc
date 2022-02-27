@@ -1,8 +1,10 @@
 #include <iostream>
-#include "../cnova.h"
+#include <cnova.h>
+#include <ROOT_PATH.h>
 
+static const std::string rootPath(ROOT_PATH);
 int main() {
-    auto interpreter = new cnova::CNovaInterpreter{"../script/word_counter.nova"};
+    auto interpreter = new cnova::CNovaInterpreter{rootPath + "/data/script/word_counter.nova"};
     std::string sentence = "I thought what I'd do was I'd pretend I was one of those deaf-mutes.";
     interpreter->execute(sentence.data());
     auto dic = interpreter->getDictionaryResult(0);

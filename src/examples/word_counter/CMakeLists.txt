@@ -1,0 +1,17 @@
+#默认使用目录名作为项目名
+GET_DIR_NAME(DIRNAME)
+set(TARGET_NAME "${DIRNAME}")
+#多个源文件用 [空格] 分隔
+#如：set(STR_TARGET_SOURCES "main.cpp src_2.cpp")
+file(GLOB ALL_SOURCES
+	"${CMAKE_CURRENT_SOURCE_DIR}/*.c*"
+	"${CMAKE_CURRENT_SOURCE_DIR}/*.h*"
+)
+set(STR_TARGET_SOURCES "")
+foreach(SOURCE ${ALL_SOURCES})
+	set(STR_TARGET_SOURCES "${STR_TARGET_SOURCES} ${SOURCE}")
+endforeach(SOURCE ${ALL_SOURCES})
+string(REPLACE " " ";" LIST_TARGET_SOURCES ${STR_TARGET_SOURCES})
+
+add_executable(${TARGET_NAME} ${LIST_TARGET_SOURCES})
+target_link_libraries(${TARGET_NAME} ${PROJECT_NAME})
